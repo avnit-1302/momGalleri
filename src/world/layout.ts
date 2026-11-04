@@ -1,4 +1,5 @@
-import type { RoomId, Vec3 } from '../content/museumContent';
+import { museumContent, type RoomId, type Vec3 } from '../content/museumContent';
+import { MAIN_GALLERY } from './galleryLayout';
 
 export interface Room {
   id: RoomId;
@@ -36,10 +37,10 @@ export const rooms: Room[] = [
   {
     id: 'childhood',
     number: '03',
-    name: 'The First Chapters',
-    subtitle: 'Childhood and early memories',
+    name: 'Remembering Puja Anand',
+    subtitle: 'Photographs and treasured memories',
     description:
-      'A space for photographs and stories from the early chapters of Puja Anand’s life. Select a picture on the wall to look more closely and read its memory.',
+      'Photographs of Puja Anand, remembered with love. Select a picture to look more closely, and take a quiet moment with her memory.',
     bounds: [-30, -10, -12, 12],
     spawn: [-19, 1.7, 4],
     yaw: Math.PI / 2,
@@ -58,10 +59,10 @@ export const rooms: Room[] = [
   {
     id: 'sanctuary',
     number: '05',
-    name: 'The Heart of Our Family',
+    name: museumContent.mother.tributeHeading,
     subtitle: 'Love, gratitude and remembrance',
     description:
-      'A peaceful, Sikh-inspired family tribute to Puja Anand. Pause here to remember her with love and gratitude, and reflect on the place she holds in your heart.',
+      'Ik Onkar (ੴ) means “One Universal Creator.” It expresses the Sikh belief in one Divine reality present throughout creation and opens the Guru Granth Sahib, the Sikh scripture. This space invites quiet reflection on oneness and remembrance.',
     bounds: [-30, -10, -30, -12],
     spawn: [-20, 1.7, -19],
     yaw: 0,
@@ -70,11 +71,11 @@ export const rooms: Room[] = [
     id: 'celebration',
     number: '06',
     name: 'Forever Remembered',
-    subtitle: 'Honouring Puja Anand’s memory',
+    subtitle: 'The nature gallery · Honouring Puja Anand’s memory',
     description:
-      'On what would have been Puja Anand’s 50th birthday, we honour her life and remember the love she shared. The moments we had with her remain part of us.',
-    bounds: [-10, 30, -30, -12],
-    spawn: [10, 1.7, -21],
+      'Explore the nature collection beneath a vaulted skylight, with a sunflower inlaid in the gallery floor. On what would have been Puja Anand’s 50th birthday, we honour her life and remember the love she shared.',
+    bounds: MAIN_GALLERY.bounds,
+    spawn: MAIN_GALLERY.spawn,
     yaw: 0,
   },
 ];
@@ -104,9 +105,30 @@ for (const x of [-30, 30]) {
     [5, 9, false],
     [9, 12, true],
   ];
-  for (const [start, end, glass] of panels) wall(x, (start + end) / 2, 0.35, end - start, glass);
+  for (const [start, end, glass] of panels) {
+    if (x === 30 && start < -12) {
+      if (end > -12) wall(x, (-12 + end) / 2, 0.35, end + 12, glass);
+      continue;
+    }
+    wall(x, (start + end) / 2, 0.35, end - start, glass);
+  }
 }
-wall(0, -30, 60, 0.35);
+// The sanctuary stays in place; the main gallery extends eighteen metres north.
+wall(-20, -30, 20, 0.35);
+wall(10, MAIN_GALLERY.bounds[2], 40, 0.35, false, MAIN_GALLERY.wallHeight);
+wall(-10, -39, 0.35, 18, false, MAIN_GALLERY.wallHeight);
+for (const [start, end, glass] of [
+  [-48, -41.5, false],
+  [-41.5, -39.5, true],
+  [-39.5, -34.5, false],
+  [-34.5, -32.5, true],
+  [-32.5, -27.5, false],
+  [-27.5, -25, true],
+  [-25, -18, false],
+  [-18, -12, true],
+] as [number, number, boolean][]) {
+  wall(30, (start + end) / 2, 0.35, end - start, glass, MAIN_GALLERY.wallHeight);
+}
 wall(-20, 12, 20, 0.2, true);
 wall(20, 12, 20, 0.2, true);
 wall(-10, 20, 0.2, 16, true);
@@ -119,16 +141,18 @@ for (const x of [-10, 10]) {
 }
 for (const x of [-6.5, 6.5]) wall(x, 12, 7, 0.35);
 for (const x of [-26.5, -13.5, -6.5, 6.5, 13.5, 26.5]) wall(x, -12, 7, 0.35);
-wall(-10, -27, 0.35, 6);
-wall(-10, -15, 0.35, 6);
+wall(-10, -27, 0.35, 6, false, MAIN_GALLERY.wallHeight);
+wall(-10, -15, 0.35, 6, false, MAIN_GALLERY.wallHeight);
 
 export const benches: Vec3[] = [
   [-20, 0.45, 7.5],
   [20, 0.45, 7.5],
   [-24.5, 0.45, -23.5],
   [-15.5, 0.45, -23.5],
-  [3, 0.45, -17],
-  [17, 0.45, -17],
+  [0, 0.45, -30],
+  [20, 0.45, -30],
+  [3, 0.45, -41],
+  [17, 0.45, -41],
 ];
 export const planters: Vec3[] = [
   [-7.5, 0, 8.5],
@@ -139,8 +163,8 @@ export const planters: Vec3[] = [
   [27, 0, 9],
   [-27.5, 0, -27.5],
   [-12.5, 0, -27.5],
-  [26.5, 0, -27],
-  [-6.5, 0, -27],
+  [27, 0, -45.5],
+  [-7, 0, -45.5],
 ];
 export const colliders: Collider[] = [
   ...walls.map((w) => ({

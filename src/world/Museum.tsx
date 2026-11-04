@@ -116,7 +116,8 @@ export default function Museum({ quality, onReady, onFailure, ...visitor }: Prop
       </Environment>
       <Forest low={low} />
       <Architecture low={low} />
-      {photographs.map((photo) => (
+      {/* The tribute wall displays Ik Onkar; its portrait remains in the photo collection. */}
+      {photographs.filter((photo) => photo.id !== 'tribute-portrait').map((photo) => (
         <GalleryFrame
           key={photo.id}
           photo={photo}

@@ -13,7 +13,7 @@ mother: {
   portrait: 'images/mother/puja-anand.jpg',
   portraitIsPlaceholder: false,
   welcome: 'In loving memory of Puja Anand. Add your family’s introduction here.',
-  tributeHeading: 'The Heart of Our Family',
+  tributeHeading: 'Ik Onkar',
   tribute: 'Add your family’s memories and words of gratitude here.',
   ending: 'Always loved. Forever remembered.',
 }
@@ -22,6 +22,10 @@ mother: {
 The same portrait is displayed in three rooms. `commemorativeBirthday` means the birthday being commemorated, not her age when she died. The English copy also refers explicitly to her 50th birthday; update those sentences if the occasion changes.
 
 ## A photograph
+
+The uploaded JPEGs are now connected: two files under `mother`, five under `family`, fifteen under `nature`, and `theOneness/harmandirSahib.jpeg`. Originals are preserved without cropping or re-encoding. The main portrait uses `images/mother/portrait.jpeg`. Descriptions avoid invented dates or events.
+
+The nature collection is configured in `src/content/natureCollection.ts`. It includes every current file in `public/images/nature`, including the retained `sunlight.svg` illustration. Titles, descriptions and original pixel dimensions are listed there. Frame sizes follow each image's aspect ratio; the original file opens in the viewer. To add another work, add its entry and a free wall position in `src/world/galleryLayout.ts`. The test suite checks folder coverage and prevents overlapping frames.
 
 Edit the existing `makePhoto(...)` examples, or replace them with entries in the `photographs` array:
 
@@ -57,10 +61,12 @@ All measurements are in metres. Eye height is 1.7 m. `position` is `[x, height, 
 | ------------- | ----------------------- | -------------------- |
 | `entrance`    | A Place to Remember     | x −10…10, z 12…28    |
 | `atrium`      | The Seahorse Hall       | x −10…10, z −12…12   |
-| `childhood`   | The First Chapters      | x −30…−10, z −12…12  |
+| `childhood`   | Remembering Puja Anand | x −30…−10, z −12…12  |
 | `family`      | The Life We Shared      | x 10…30, z −12…12    |
-| `sanctuary`   | The Heart of Our Family | x −30…−10, z −30…−12 |
-| `celebration` | Forever Remembered      | x −10…30, z −30…−12  |
+| `sanctuary`   | THE ONENESS             | x −30…−10, z −30…−12 |
+| `celebration` | Forever Remembered      | x −10…30, z −48…−12  |
+
+The largest gallery is now 40 × 36 metres (1,440 m²), twice its previous area. It has a vaulted skylight rising to 12.2 metres, a warm oak floor, all sixteen nature works, and the memorial portrait. The sunflower is an original, fully walkable stone-and-brass floor inlay, implemented in `src/world/SunflowerFloor.tsx`. Its placement and the gallery bounds are shared through `MAIN_GALLERY` in `src/world/galleryLayout.ts`.
 
 | Wall / direction faced by the photograph | `rotation`     |
 | ---------------------------------------- | -------------- |
@@ -81,4 +87,4 @@ Compress videos before uploading. Cloudflare Pages documents a 25 MiB limit per 
 
 ## The tribute room
 
-This is a Sikh-inspired family memorial space for remembering Puja Anand with love and gratitude. It is not a reconstruction of a Gurdwara. Ik Onkar is elevated on the wall, separate from the portrait and walking surfaces. The sacred symbol is preserved; the surrounding prose is English. There are no invented scriptures or religious quotations. Personal words can be edited directly in the content configuration.
+This is a Sikh-inspired space for reflection. It is not a reconstruction of a Gurdwara. The large unframed Ik Onkar remains elevated on the central wall. The uploaded Harmandir Sahib photograph is displayed on the side wall. The sacred symbol is preserved; the surrounding prose is English. There are no invented scriptures or religious quotations. Personal words can be edited directly in the content configuration.

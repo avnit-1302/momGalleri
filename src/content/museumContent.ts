@@ -1,3 +1,6 @@
+﻿import { naturePhotographs } from './natureCollection';
+import { MAIN_GALLERY } from '../world/galleryLayout';
+
 export type RoomId = 'entrance' | 'atrium' | 'childhood' | 'family' | 'sanctuary' | 'celebration';
 export type Vec3 = [number, number, number];
 export interface Photograph {
@@ -19,11 +22,11 @@ export const museumContent = {
   mother: {
     name: 'Puja Anand',
     commemorativeBirthday: 50,
-    portrait: 'images/mother/portrait.svg',
-    portraitIsPlaceholder: true,
+    portrait: 'images/mother/portrait.jpeg',
+    portraitIsPlaceholder: false,
     welcome:
       'In loving memory of Puja Anand. This museum honours her life and the love she shared, on what would have been her 50th birthday. A quiet place to remember her, together.',
-    tributeHeading: 'The Heart of Our Family',
+    tributeHeading: 'THE ONENESS',
     tribute:
       'We remember Puja Anand with love and gratitude: for the care she gave, the warmth she shared, and the moments we hold close. Her memory remains in the hearts of those who loved her.',
     ending:
@@ -41,19 +44,22 @@ const makePhoto = (
   title: string,
   image: string,
   position: Vec3,
-  rotation = 0,
-  width = 2.5,
-  height = 2,
-): Photograph => ({
-  id,
-  room,
-  title,
-  image,
-  placement: { position, rotation, width, height },
-  placeholder: true,
-  description:
-    'A place for your own photograph and a personal memory of Puja Anand. This nature illustration is a placeholder, not a family photograph.',
-});
+  rotation: number,
+  sourceWidth: number,
+  sourceHeight: number,
+  description: string,
+): Photograph => {
+  const fit = Math.min(3.4 / sourceWidth, 3.5 / sourceHeight);
+  return {
+    id,
+    room,
+    title,
+    image,
+    description,
+    placeholder: false,
+    placement: { position, rotation, width: sourceWidth * fit, height: sourceHeight * fit },
+  };
+};
 const portrait = (id: string, room: RoomId, position: Vec3, rotation: number): Photograph => ({
   id,
   room,
@@ -65,129 +71,96 @@ const portrait = (id: string, room: RoomId, position: Vec3, rotation: number): P
       : room === 'celebration'
         ? museumContent.mother.ending
         : museumContent.mother.welcome,
-  placement: { position, rotation, width: 2.6, height: 3.5 },
+  placement: { position, rotation, width: (3.5 * 1529) / 2030, height: 3.5 },
   featured: true,
   placeholder: museumContent.mother.portraitIsPlaceholder,
 });
 
 export const photographs: Photograph[] = [
   portrait('welcome-portrait', 'entrance', [9.72, 3.5, 21], -Math.PI / 2),
+  portrait('childhood-portrait', 'childhood', [-29.72, 3.3, 0], Math.PI / 2),
   makePhoto(
     'childhood-1',
     'childhood',
-    'The First Chapters',
-    'images/childhood/meadow.svg',
-    [-29.72, 3.2, -7],
+    'A Quiet Moment',
+    'images/mother/image00005.jpeg',
+    [-29.72, 3.3, -7],
     Math.PI / 2,
-  ),
-  makePhoto(
-    'childhood-2',
-    'childhood',
-    'Little Moments',
-    'images/childhood/forest.svg',
-    [-29.72, 3.2, 0],
-    Math.PI / 2,
-    2.7,
-    3.3,
-  ),
-  makePhoto(
-    'childhood-3',
-    'childhood',
-    'A World to Discover',
-    'images/childhood/meadow.svg',
-    [-29.72, 3.2, 7],
-    Math.PI / 2,
-  ),
-  makePhoto(
-    'childhood-4',
-    'childhood',
-    'A Memory to Treasure',
-    'images/family/coast.svg',
-    [-14, 3.2, -11.72],
-    0,
-    3,
-    2.3,
+    1406,
+    2015,
+    'A photograph of Puja Anand, remembered with love.',
   ),
   makePhoto(
     'family-1',
     'family',
     'Together',
-    'images/family/coast.svg',
+    'images/family/family.jpeg',
     [29.72, 3.3, -7],
     -Math.PI / 2,
-    3.4,
-    2.6,
+    1080,
+    1290,
+    'A family photograph, held close in memory.',
   ),
   makePhoto(
     'family-2',
     'family',
     'Everyday Joy',
-    'images/childhood/forest.svg',
+    'images/family/meAndMom.jpeg',
     [29.72, 3.3, 0],
     -Math.PI / 2,
+    680,
+    1011,
+    'A shared moment with Puja Anand.',
   ),
   makePhoto(
     'family-3',
     'family',
-    'Those We Hold Dear',
-    'images/childhood/meadow.svg',
+    'A Day Together',
+    'images/family/momAndBro.jpeg',
     [29.72, 3.3, 7],
     -Math.PI / 2,
-    2.4,
-    3,
+    1600,
+    1066,
+    'A moment together in the snow.',
   ),
   makePhoto(
     'family-4',
     'family',
-    'A Place to Belong',
-    'images/celebration/sunlight.svg',
-    [14, 3.2, -11.72],
+    'With Family',
+    'images/family/momAndSisters.jpeg',
+    [14, 3.3, -11.72],
     0,
+    768,
+    1024,
+    'Family, closeness and a moment to remember.',
   ),
+  makePhoto(
+    'family-5',
+    'family',
+    'A Family Memory',
+    'images/family/momBroMe.jpeg',
+    [26, 3.3, -11.72],
+    0,
+    750,
+    1334,
+    'A treasured family photograph of Puja Anand with her loved ones.',
+  ),
+  // Available in the collection; the main tribute wall remains the unframed Ik Onkar.
   portrait('tribute-portrait', 'sanctuary', [-20, 3.55, -29.63], 0),
   makePhoto(
     'gratitude-1',
     'sanctuary',
-    'With Gratitude',
-    'images/childhood/meadow.svg',
-    [-29.72, 3.2, -21],
+    'Harmandir Sahib',
+    'images/theOneness/harmandirSahib.jpeg',
+    [-29.72, 3.3, -21],
     Math.PI / 2,
-    2.4,
-    2.4,
+    1088,
+    1600,
+    'Puja Anand at Harmandir Sahib.',
   ),
-  portrait('remembrance-portrait', 'celebration', [10, 3.5, -29.63], 0),
-  makePhoto(
-    'celebration-1',
-    'celebration',
-    'Treasured Moments',
-    'images/celebration/sunlight.svg',
-    [2, 3.2, -29.72],
-    0,
-    3.2,
-    2.4,
-  ),
-  makePhoto(
-    'celebration-2',
-    'celebration',
-    'The Love She Left With Us',
-    'images/family/coast.svg',
-    [18, 3.2, -29.72],
-    0,
-    3.2,
-    2.4,
-  ),
-  makePhoto(
-    'celebration-3',
-    'celebration',
-    'Remembering Puja Anand',
-    'images/celebration/sunlight.svg',
-    [29.72, 3.3, -22],
-    -Math.PI / 2,
-    3,
-    2.25,
-  ),
+  portrait('remembrance-portrait', 'celebration', MAIN_GALLERY.portrait, 0),
+  ...naturePhotographs,
 ];
-
 export function assetUrl(path: string) {
   if (/^(https?:|data:|blob:)/.test(path)) return path;
   return `${import.meta.env.BASE_URL}${path.replace(/^\//, '')}`;

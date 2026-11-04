@@ -12,6 +12,7 @@ import {
   Vector3,
 } from 'three';
 import { mergeGeometries } from 'three/examples/jsm/utils/BufferGeometryUtils.js';
+import { MAIN_GALLERY } from './galleryLayout';
 
 export type TreeSpecies = 'birch' | 'oak' | 'fir';
 export function seededRandom(initial: number) {
@@ -417,7 +418,12 @@ export function fernGeometry() {
 }
 
 export function terrainHeight(x: number, z: number) {
-  const distance = Math.max(Math.abs(x) - 34, Math.abs(z + 1) - 34, 0);
+  // Keep terrain below the extended gallery as well as the original building.
+  const [x1, x2, z1, z2] = MAIN_GALLERY.bounds;
+  const distance = Math.min(
+    Math.max(Math.abs(x) - 34, Math.abs(z + 1) - 34, 0),
+    Math.max(x1 - 4 - x, x - x2 - 4, z1 - 4 - z, z - z2 - 4, 0),
+  );
   const amplitude = Math.min(distance / 14, 1);
   return (
     -0.15 +

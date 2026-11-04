@@ -63,7 +63,8 @@ export function GalleryFrame({
   const plaqueX = (plaqueWidth - width) / 2;
   useFrame(({ camera }) => {
     const distance = camera.position.distanceTo(worldPosition);
-    if (!near && distance < 31) setNear(true);
+    // The enlarged hall has long sightlines: load its visible perimeter works on entry.
+    if (!near && distance < (photo.room === 'celebration' ? 60 : 31)) setNear(true);
     if (lit && distance > 19) setLit(false);
     else if (!lit && distance < 17) setLit(true);
   });

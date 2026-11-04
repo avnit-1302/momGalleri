@@ -23,6 +23,7 @@ import {
   treeGeometry,
 } from './forestAssets';
 import type { TreeSpecies } from './forestAssets';
+import { MAIN_GALLERY } from './galleryLayout';
 
 type Instance = { matrix: Matrix4; color?: Color };
 function Instances({
@@ -107,7 +108,10 @@ export function Forest({ low }: { low: boolean }) {
       ferns: Instance[] = [],
       rocks: Instance[] = [],
       shrubs: Instance[] = [];
-    const outside = (x: number, z: number) => !(x > -34 && x < 34 && z > -35 && z < 33);
+    const [gx1, gx2, gz1, gz2] = MAIN_GALLERY.bounds;
+    const outside = (x: number, z: number) =>
+      !(x > -34 && x < 34 && z > -35 && z < 33) &&
+      !(x > gx1 - 8 && x < gx2 + 8 && z > gz1 - 8 && z < gz2 + 8);
     for (let i = 0; i < (low ? 138 : 258); i++) {
       let x: number, z: number;
       // Dense, varied woodland edge; taller trees create depth behind it.
@@ -122,6 +126,7 @@ export function Forest({ low }: { low: boolean }) {
           z = (random() - 0.5) * 210;
         } while (!outside(x, z));
       }
+      if (!outside(x, z)) z = gz1 - 8 - random() * 14;
       const species: TreeSpecies =
         i % 7 === 0 || i % 7 === 1 ? 'fir' : i % 3 === 0 ? 'oak' : 'birch';
       const scale = 0.65 + random() * 0.72,

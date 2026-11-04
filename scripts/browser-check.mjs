@@ -41,9 +41,9 @@ try {
   await page.keyboard.up('KeyW');
   await page.screenshot({ path: 'artifacts/atrium.png' });
   const roomNames = [
-    'The First Chapters',
+    'Remembering Puja Anand',
     'The Life We Shared',
-    'The Heart of Our Family',
+    'THE ONENESS',
     'Forever Remembered',
   ];
   for (const name of roomNames) {
@@ -85,14 +85,14 @@ try {
   await page.getByRole('button', { name: 'Return to the entrance' }).click();
   await page.getByRole('heading', { name: 'A Place to Remember', exact: true }).waitFor();
   // Verify a missing local asset is handled without taking down the museum.
-  await page.route('**/images/family/coast.svg', (route) =>
+  await page.route('**/images/family/family.jpeg', (route) =>
     route.fulfill({ status: 404, body: 'missing' }),
   );
   await page.getByRole('button', { name: 'Menu', exact: true }).click();
   await page.getByRole('button', { name: 'View all photographs' }).click();
   await page.getByRole('button', { name: 'Together', exact: true }).click();
   await page.getByText('This photograph is not available yet.').waitFor();
-  await page.unroute('**/images/family/coast.svg');
+  await page.unroute('**/images/family/family.jpeg');
   const mobile = await browser.newContext({
     viewport: { width: 390, height: 844 },
     isMobile: true,
@@ -128,11 +128,15 @@ try {
     .waitFor({ timeout: 15000 });
   await phone.screenshot({ path: 'artifacts/mobile-explore.png' });
   await phone.getByRole('button', { name: /^Explore the museum/ }).tap();
-  await phone.getByRole('button', { name: 'Go to The Heart of Our Family', exact: true }).tap();
+  await phone.getByRole('button', { name: 'Go to THE ONENESS', exact: true }).tap();
+  await phone.screenshot({ path: 'artifacts/tribute-symbol-mobile.png' });
+  // The tribute wall now holds Ik Onkar; verify photo tapping on the final gallery portrait.
+  await phone.getByRole('button', { name: /^Explore the museum/ }).tap();
+  await phone.getByRole('button', { name: 'Go to Forever Remembered', exact: true }).tap();
   const mobileCamera = new PerspectiveCamera(65, 390 / 844, 0.1, 190);
-  mobileCamera.position.set(-20, 1.7, -19);
+  mobileCamera.position.set(10, 1.7, -18.5);
   mobileCamera.updateMatrixWorld();
-  const portrait = new Vector3(-20, 3.55, -29.55).project(mobileCamera);
+  const portrait = new Vector3(10, 3.5, -47.55).project(mobileCamera);
   await phone.touchscreen.tap((portrait.x + 1) * 195, (1 - portrait.y) * 422);
   await phone.getByRole('dialog', { name: 'Puja Anand', exact: true }).waitFor();
   await phone.getByRole('button', { name: 'Close', exact: true }).tap();
@@ -160,7 +164,7 @@ try {
   await fallbackPage.getByRole('dialog', { name: 'All photographs' }).waitFor();
   await fallback.close();
   assert.deepEqual(errors, []);
-  const unexpected = requests.filter((r) => !r.includes('/images/family/coast.svg'));
+  const unexpected = requests.filter((r) => !r.includes('/images/family/family.jpeg'));
   assert.deepEqual(unexpected, []);
   writeFileSync(
     'artifacts/browser-results.json',

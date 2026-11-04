@@ -16,7 +16,7 @@ export function MuseumMap({
       <p className="muted">Choose a room on the map, or continue on foot.</p>
       <svg
         className="museum-map"
-        viewBox="-33 -34 66 65"
+        viewBox={`${Math.min(...rooms.map((r) => r.bounds[0])) - 3} ${Math.min(...rooms.map((r) => r.bounds[2])) - 3} ${Math.max(...rooms.map((r) => r.bounds[1])) - Math.min(...rooms.map((r) => r.bounds[0])) + 6} ${Math.max(...rooms.map((r) => r.bounds[3])) - Math.min(...rooms.map((r) => r.bounds[2])) + 6}`}
         role="img"
         aria-label="Floor plan of the six museum rooms"
       >
@@ -48,7 +48,7 @@ export function MuseumMap({
                 {room.number}
               </text>
               <text x={(x1 + x2) / 2} y={(z1 + z2) / 2 + 2} className="map-label">
-                {room.id === 'sanctuary' ? 'The Heart of Our Family' : room.name}
+                {room.name}
               </text>
             </g>
           );
