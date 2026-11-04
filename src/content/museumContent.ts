@@ -17,21 +17,21 @@ export interface Photograph {
 // Replace the placeholder paths, then set placeholder: false on your photographs.
 export const museumContent = {
   mother: {
-    name: 'Mamma',
-    age: 50,
+    name: 'Puja Anand',
+    commemorativeBirthday: 50,
     portrait: 'images/mother/portrait.svg',
     portraitIsPlaceholder: true,
     welcome:
-      'Et sted for alt du er, og alt vi er takknemlige for. Velkommen til din helt egen bursdagsutstilling.',
-    tributeHeading: 'Hjertet i familien vår',
+      'In loving memory of Puja Anand. This museum honours her life and the love she shared, on what would have been her 50th birthday. A quiet place to remember her, together.',
+    tributeHeading: 'The Heart of Our Family',
     tribute:
-      'For omsorgen du gir. For varmen du deler. For alle de små øyeblikkene som betyr så mye. Dette rommet er til deg, med kjærlighet og takknemlighet.',
+      'We remember Puja Anand with love and gratitude: for the care she gave, the warmth she shared, and the moments we hold close. Her memory remains in the hearts of those who loved her.',
     ending:
-      'Takk for alt du er. Vi gleder oss til alle minnene vi ennå skal skape sammen. Gratulerer med 50-årsdagen, mamma.',
+      'On what would have been her 50th birthday, we remember Puja Anand with love. We treasure the time we shared and carry her memory with us. Always loved. Forever remembered.',
   },
-  exhibitionTitle: '50 Years of Love & Memories',
-  celebrationTitle: 'Happy 50th Birthday',
-  // Optional local MP4/WebM, e.g. 'videos/bursdagshilsen.mp4'. No third-party embeds.
+  exhibitionTitle: 'In Loving Memory of Puja Anand',
+  celebrationTitle: 'Forever Remembered',
+  // Optional local MP4/WebM, e.g. 'videos/remembering-puja.mp4'. No third-party embeds.
   celebrationVideo: '',
 };
 
@@ -52,7 +52,7 @@ const makePhoto = (
   placement: { position, rotation, width, height },
   placeholder: true,
   description:
-    'Her er det plass til deres eget fotografi og en personlig historie. Dette naturmotivet er et eksempelbilde, ikke et familieminne.',
+    'A place for your own photograph and a personal memory of Puja Anand. This nature illustration is a placeholder, not a family photograph.',
 });
 const portrait = (id: string, room: RoomId, position: Vec3, rotation: number): Photograph => ({
   id,
@@ -75,7 +75,7 @@ export const photographs: Photograph[] = [
   makePhoto(
     'childhood-1',
     'childhood',
-    'De første kapitlene',
+    'The First Chapters',
     'images/childhood/meadow.svg',
     [-29.72, 3.2, -7],
     Math.PI / 2,
@@ -83,7 +83,7 @@ export const photographs: Photograph[] = [
   makePhoto(
     'childhood-2',
     'childhood',
-    'Små øyeblikk',
+    'Little Moments',
     'images/childhood/forest.svg',
     [-29.72, 3.2, 0],
     Math.PI / 2,
@@ -93,7 +93,7 @@ export const photographs: Photograph[] = [
   makePhoto(
     'childhood-3',
     'childhood',
-    'En verden å oppdage',
+    'A World to Discover',
     'images/childhood/meadow.svg',
     [-29.72, 3.2, 7],
     Math.PI / 2,
@@ -101,7 +101,7 @@ export const photographs: Photograph[] = [
   makePhoto(
     'childhood-4',
     'childhood',
-    'Et minne å ta vare på',
+    'A Memory to Treasure',
     'images/family/coast.svg',
     [-14, 3.2, -11.72],
     0,
@@ -111,7 +111,7 @@ export const photographs: Photograph[] = [
   makePhoto(
     'family-1',
     'family',
-    'Sammen',
+    'Together',
     'images/family/coast.svg',
     [29.72, 3.3, -7],
     -Math.PI / 2,
@@ -121,7 +121,7 @@ export const photographs: Photograph[] = [
   makePhoto(
     'family-2',
     'family',
-    'Hverdagslykke',
+    'Everyday Joy',
     'images/childhood/forest.svg',
     [29.72, 3.3, 0],
     -Math.PI / 2,
@@ -129,7 +129,7 @@ export const photographs: Photograph[] = [
   makePhoto(
     'family-3',
     'family',
-    'Nære og kjære',
+    'Those We Hold Dear',
     'images/childhood/meadow.svg',
     [29.72, 3.3, 7],
     -Math.PI / 2,
@@ -139,7 +139,7 @@ export const photographs: Photograph[] = [
   makePhoto(
     'family-4',
     'family',
-    'Et sted å høre til',
+    'A Place to Belong',
     'images/celebration/sunlight.svg',
     [14, 3.2, -11.72],
     0,
@@ -148,18 +148,18 @@ export const photographs: Photograph[] = [
   makePhoto(
     'gratitude-1',
     'sanctuary',
-    'Med takknemlighet',
+    'With Gratitude',
     'images/childhood/meadow.svg',
     [-29.72, 3.2, -21],
     Math.PI / 2,
     2.4,
     2.4,
   ),
-  portrait('birthday-portrait', 'celebration', [10, 3.5, -29.63], 0),
+  portrait('remembrance-portrait', 'celebration', [10, 3.5, -29.63], 0),
   makePhoto(
     'celebration-1',
     'celebration',
-    'Flere gode øyeblikk',
+    'Treasured Moments',
     'images/celebration/sunlight.svg',
     [2, 3.2, -29.72],
     0,
@@ -169,7 +169,7 @@ export const photographs: Photograph[] = [
   makePhoto(
     'celebration-2',
     'celebration',
-    'Alt vi har foran oss',
+    'The Love She Left With Us',
     'images/family/coast.svg',
     [18, 3.2, -29.72],
     0,
@@ -179,7 +179,7 @@ export const photographs: Photograph[] = [
   makePhoto(
     'celebration-3',
     'celebration',
-    'En hilsen til deg',
+    'Remembering Puja Anand',
     'images/celebration/sunlight.svg',
     [29.72, 3.3, -22],
     -Math.PI / 2,

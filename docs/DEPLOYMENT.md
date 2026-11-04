@@ -1,46 +1,46 @@
-# Publiser museet uten eget domene
+# Publish the memorial without a custom domain
 
-Museet består bare av statiske filer. Du trenger ingen server, database, betalt API eller betalingskort for selve applikasjonen. Bruk vertens gratisnivå; ikke aktiver betalte tillegg. Vertstjenesten krever en konto. Planvilkår og grenser kan endre seg; lenkene nedenfor peker til leverandørenes dokumentasjon.
+The museum consists entirely of static files. The application needs no server, database, paid API, or payment card. Choose a hosting provider's free tier without paid extras. A hosting account is required. Terms and usage limits may change; the links below lead to the providers' documentation.
 
-## Cloudflare Pages: last opp ferdig museum
+## Cloudflare Pages: upload the finished museum
 
-1. Kjør `npm ci`, `npm test` og `npm run build` på din maskin.
-2. Logg inn i Cloudflare og gå til **Workers & Pages**.
-3. Opprett et Pages-prosjekt med **Direct Upload / Drag and drop**.
-4. Last opp `dist`-mappen, slik at dens `index.html` ligger øverst i de publiserte filene. Ikke last opp prosjektets kildekode eller `node_modules`.
-5. Velg prosjektnavn og publiser. Du får en adresse på `pages.dev` som kan deles med familien.
-6. Etter bildeendringer: bygg på nytt og last opp den nye `dist`-mappen som en ny produksjonsversjon i samme prosjekt.
+1. Run `npm ci`, `npm test`, and `npm run build` locally.
+2. Sign in to Cloudflare and open **Workers & Pages**.
+3. Create a Pages project using **Direct Upload / Drag and drop**.
+4. Upload `dist` so its `index.html` is at the root of the published files. Do not upload the source tree or `node_modules`.
+5. Choose a project name and publish. Share the assigned `pages.dev` address with the family.
+6. After editing photographs, rebuild and upload the new `dist` folder as a new production version of the same project.
 
-Cloudflare dokumenterer både [direkte opplasting](https://developers.cloudflare.com/pages/get-started/direct-upload/) og [grensene for gratisnivået](https://developers.cloudflare.com/pages/platform/limits/). Enkeltfiler må være under 25 MiB; dette gjelder også videohilsener. Direct Upload er et eget prosjektvalg og kan ikke senere byttes til Git-integrasjon i samme Pages-prosjekt.
+Cloudflare documents [Direct Upload](https://developers.cloudflare.com/pages/get-started/direct-upload/) and [free-plan limits](https://developers.cloudflare.com/pages/platform/limits/). Individual files, including videos, must stay below 25 MiB. A Direct Upload project cannot later switch to Git integration within that same Pages project.
 
-## Vercel: publiser fra GitHub
+## Vercel: deploy from GitHub
 
-1. Legg den ferdige kildekoden i ditt GitHub-repository. `node_modules`, `dist` og testbilder er allerede ignorert av Git.
-2. Opprett et prosjekt på Vercels **Hobby**-plan og importer repositoryet.
-3. Velg **Vite**, byggkommando `npm run build`, installasjon `npm ci`, og utmappe `dist`.
-4. Bruk Node.js 22 eller nyere i prosjektinnstillingene. Ingen miljøvariabler trengs.
-5. Publiser og bruk den tildelte `vercel.app`-adressen.
+1. Put the finished source in your GitHub repository. Git already ignores `node_modules`, `dist`, and test screenshots.
+2. Create a Vercel **Hobby** project and import the repository.
+3. Choose **Vite**, build command `npm run build`, install command `npm ci`, and output directory `dist`.
+4. Select Node.js 22 or later. No environment variables are needed.
+5. Publish and share the assigned `vercel.app` address.
 
-[Vercels Hobby-plan](https://vercel.com/docs/plans/hobby) er beregnet på personlige prosjekter og har et gratis bruksnivå. Se [Vite på Vercel](https://vercel.com/docs/frameworks/frontend/vite) for leverandørens konfigurasjon.
+[Vercel's Hobby plan](https://vercel.com/docs/plans/hobby) is intended for personal projects and includes free usage. See [Vite on Vercel](https://vercel.com/docs/frameworks/frontend/vite) for configuration details.
 
-## Netlify: publiser `dist` eller koble GitHub
+## Netlify: upload `dist` or connect GitHub
 
-Kjør `npm run build`, og bruk Netlifys manuelle opplasting til å slippe inn `dist`-mappen. Du kan også importere repositoryet og bruke `npm run build` med `dist` som publiseringsmappe. `netlify.toml` i prosjektet angir disse innstillingene. Bruk gratisplanen og den inkluderte `netlify.app`-adressen.
+Run `npm run build`, then use Netlify's manual upload to deploy `dist`. Alternatively, import the repository with build command `npm run build` and publish directory `dist`. The included `netlify.toml` declares these settings. Choose the free plan and use the included `netlify.app` address.
 
-Se Netlifys [veiledning for opprettelse av deploys](https://docs.netlify.com/deploy/create-deploys/) og [gjeldende planer](https://www.netlify.com/pricing/). Museet trenger ingen Netlify Functions, skjemaer, database eller andre tillegg.
+See [Netlify's deployment guide](https://docs.netlify.com/deploy/create-deploys/) and [current plans](https://www.netlify.com/pricing/). This project needs no Functions, forms, database, or other add-ons.
 
-## Etter to uker
+## Taking the memorial offline
 
-Museet har ingen innebygd utløpsdato og blir tilgjengelig til du tar det ned. Behold en lokal kopi av kildekoden og familiebildene. Åpne det aktuelle prosjektet hos verten og bruk prosjektinnstillingene til å slette eller avpublisere det. Ved sletting: kontroller prosjektnavnet slik at bare bursdagsmuseet fjernes. Slett også eventuelle separate forhåndsvisningsversjoner dersom verten beholder disse. Den lokale mappen trenger ikke slettes.
+There is no built-in expiry date. The museum remains available until you take it down, whether after two weeks or at another time chosen by the family. Keep a local copy of the source and photographs. Open the hosting project's settings to delete or unpublish it. Check the project name before deletion, and remove separate preview deployments if the provider retains them. The local project does not need to be deleted.
 
-En vanlig statisk publisering er tilgjengelig for alle som har nettadressen; applikasjonen har ikke innlogging. Velg bildene familien ønsker å dele. Et privat GitHub-repository gjør ikke automatisk den publiserte nettsiden privat.
+A normal static deployment is accessible to anyone with its address; the application has no sign-in. Choose the photographs the family wishes to share. A private GitHub repository does not automatically make the published site private.
 
-## Sjekk før deling
+## Before sharing
 
-- Portrettet og alle ønskede bilder er erstattet; `placeholder` er satt til `false` for ekte bilder.
-- Tekster og årstall er deres egne, og alle seks rom er gjennomgått.
-- Museet er prøvd på en datamaskin og en telefon.
-- Eventuelle videoer åpner og kan spilles på telefonen.
-- Den delte adressen er den publiserte adressen, ikke `localhost`.
+- Replace the portrait and desired photographs, setting `placeholder: false` for real images.
+- Review all six rooms, personal memories, and dates.
+- Keep the wording consistent with a memorial to the late Puja Anand.
+- Try the museum on a computer and a phone, including any videos.
+- Share the published address, not `localhost`.
 
-Ingen kjøp av domene er nødvendig, og ingen av de tre metodene krever endringer i 3D-koden.
+No custom domain purchase or changes to the 3D code are needed for these hosting methods.

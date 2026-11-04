@@ -1,36 +1,38 @@
-# Bilder, historier og personlige hilsener
+# Photographs, stories, and shared memories
 
-Rediger `src/content/museumContent.ts`. Vite oppdaterer siden mens du arbeider. Etter endringer må en publisert versjon bygges og lastes opp på nytt.
+Edit `src/content/museumContent.ts`. Vite updates the local page as you work. Rebuild and upload a new version to update a published site.
 
-## Portrettet
+The museum is an English-language memorial to the late **Puja Anand**, honouring what would have been her 50th birthday. Keep personal messages consistent with that purpose. Do not add biographical dates or stories unless the family supplies them.
+
+## The main portrait
 
 ```ts
 mother: {
-  name: 'Mamma',
-  age: 50,
-  portrait: 'images/mother/mamma.jpg',
+  name: 'Puja Anand',
+  commemorativeBirthday: 50,
+  portrait: 'images/mother/puja-anand.jpg',
   portraitIsPlaceholder: false,
-  welcome: 'Skriv deres egen velkomst her.',
-  tributeHeading: 'Hjertet i familien vår',
-  tribute: 'Skriv deres personlige takk og hilsen her.',
-  ending: 'Skriv deres avsluttende bursdagshilsen her.',
+  welcome: 'In loving memory of Puja Anand. Add your family’s introduction here.',
+  tributeHeading: 'The Heart of Our Family',
+  tribute: 'Add your family’s memories and words of gratitude here.',
+  ending: 'Always loved. Forever remembered.',
 }
 ```
 
-Portrettet gjenbrukes i tre rom. Det oppgitte tallet 50 er også en del av utstillingstitlene og grensesnittet. Hvis prosjektet senere brukes til en annen bursdag, søk gjennom prosjektet etter `50` og tilpass disse tekstene.
+The same portrait is displayed in three rooms. `commemorativeBirthday` means the birthday being commemorated, not her age when she died. The English copy also refers explicitly to her 50th birthday; update those sentences if the occasion changes.
 
-## Et fotografi
+## A photograph
 
-Du kan redigere de eksisterende `makePhoto(...)`-eksemplene eller erstatte dem med objekter i `photographs`-listen:
+Edit the existing `makePhoto(...)` examples, or replace them with entries in the `photographs` array:
 
 ```ts
 {
-  id: 'mitt-familiebilde',          // Må være unikt
-  image: 'images/family/sammen.jpg',
-  title: 'Din egen tittel',
-  description: 'Din historie.\nEt nytt avsnitt kan begynne her.',
+  id: 'family-photograph',          // Must be unique
+  image: 'images/family/together.jpg',
+  title: 'Your photograph title',
+  description: 'Your memory.\nBegin a new paragraph here.',
   room: 'family',
-  year: 'Valgfritt årstall',
+  year: 'Optional year',
   placeholder: false,
   featured: false,
   placement: {
@@ -39,44 +41,44 @@ Du kan redigere de eksisterende `makePhoto(...)`-eksemplene eller erstatte dem m
     width: 3.4,
     height: 2.6,
   },
-  // video: 'videos/en-hilsen.mp4',
+  // video: 'videos/a-shared-memory.mp4',
 }
 ```
 
-Filstien er relativ til `public/`: ikke ta med `public/` i `image`. Bruk helst små bokstaver og bindestreker i filnavn. Stier skiller mellom store og små bokstaver hos vertstjenesten selv om Windows ikke gjør det.
+Paths are relative to `public/`; do not include `public/` in the `image` value. Lowercase filenames with hyphens are convenient. Hosting services distinguish uppercase and lowercase even if Windows does not.
 
-`description` viser ren tekst. HTML kjøres ikke. `year`, `video`, `featured` og `placeholder` er valgfrie. `featured` markerer sentrale verk i innholdsmodellen; de tre eksisterende portrettene bruker dette feltet. Utseendet og størrelsen styres av `placement`.
+Descriptions are plain text; HTML is not executed. `year`, `video`, `featured`, and `placeholder` are optional. `featured` identifies central works in the content model, including the three existing portraits. `placement` controls their dimensions and location.
 
-## Rom og plassering
+## Rooms and placement
 
-Alle mål er i meter. Kameraets øyehøyde er 1,7 m. `position` angir `[x, høyde, z]`, og `rotation` er vinkelen rundt den loddrette aksen i radianer. Start med å erstatte eksisterende bilder: da er plasseringen allerede riktig.
+All measurements are in metres. Eye height is 1.7 m. `position` is `[x, height, z]`, and `rotation` is the angle around the vertical axis in radians. Replacing existing photographs is the easiest way to keep correct placement.
 
-| `room`        | Rom                 | Plassering           |
-| ------------- | ------------------- | -------------------- |
-| `entrance`    | Velkommen hjem      | x −10…10, z 12…28    |
-| `atrium`      | Sjøhestens sal      | x −10…10, z −12…12   |
-| `childhood`   | De første kapitlene | x −30…−10, z −12…12  |
-| `family`      | Livet vi deler      | x 10…30, z −12…12    |
-| `sanctuary`   | Hjertet i familien  | x −30…−10, z −30…−12 |
-| `celebration` | Til deg, mamma      | x −10…30, z −30…−12  |
+| `room`        | Visitor-facing name     | Bounds               |
+| ------------- | ----------------------- | -------------------- |
+| `entrance`    | A Place to Remember     | x −10…10, z 12…28    |
+| `atrium`      | The Seahorse Hall       | x −10…10, z −12…12   |
+| `childhood`   | The First Chapters      | x −30…−10, z −12…12  |
+| `family`      | The Life We Shared      | x 10…30, z −12…12    |
+| `sanctuary`   | The Heart of Our Family | x −30…−10, z −30…−12 |
+| `celebration` | Forever Remembered      | x −10…30, z −30…−12  |
 
-| Vegg / retning bildet vender | `rotation`     |
-| ---------------------------- | -------------- |
-| Nordvegg, vender mot +z      | `0`            |
-| Vestvegg, vender mot +x      | `Math.PI / 2`  |
-| Østvegg, vender mot −x       | `-Math.PI / 2` |
-| Sørvegg, vender mot −z       | `Math.PI`      |
+| Wall / direction faced by the photograph | `rotation`     |
+| ---------------------------------------- | -------------- |
+| North wall, facing +z                    | `0`            |
+| West wall, facing +x                     | `Math.PI / 2`  |
+| East wall, facing −x                     | `-Math.PI / 2` |
+| South wall, facing −z                    | `Math.PI`      |
 
-På de ytre øst- og vestveggene ligger steinpanelene ved z −21, −7, 0 og 7. Mellomrommene er vinduer. Ikke heng nye bilder midt i et vindu eller en døråpning. Rammer bygger noen centimeter ut fra veggen. Bildeplasseringene på x ±29.72 og z −29.72 er allerede tilpasset veggtykkelsen.
+Stone panels on the outer east and west walls are centred near z −21, −7, 0, and 7. The gaps are windows. Avoid placing photographs in windows or doorways. Frames project slightly from the walls; the existing x ±29.72 and z −29.72 positions account for wall thickness.
 
-Fotografier vises med hele motivet bevart og en lys bakgrunn ved ulikt sideforhold. Velg en ramme som ligner bildets proporsjoner for mindre kant. JPG og WebP passer til fotografier, PNG til transparens. Eksporter gjerne 1600–2400 piksler langs lengste side, ofte under 1 MB per bilde. Originalfilen lastes i bildevisningen; GPU-teksturen er mindre. Eksporter HEIC til JPG/WebP før bruk.
+Photographs retain their entire image, with a light border when proportions differ from the frame. Choose similar image and frame proportions to reduce that border. JPG and WebP suit photographs; PNG supports transparency. Images around 1600–2400 pixels on their longest side and under 1 MB are practical. The viewer loads the original file while the GPU texture is smaller. Convert HEIC images to JPG or WebP first.
 
-## Video
+## Videos
 
-Legg filer i `public/videos/`. Sett `museumContent.celebrationVideo` for en felles bursdagshilsen. Da vises «Se bursdagshilsen» i det siste rommet. Bruk `video` på et fotografi for en hilsen knyttet til akkurat det bildet. MP4 med H.264 og AAC har bred støtte. Filene spilles først når besøkeren velger å gjøre det; det finnes ingen automatisk avspilling.
+Place videos in `public/videos/`. Set `museumContent.celebrationVideo` for a shared remembrance video; **Watch shared memories** then appears in the final room. Set `video` on an individual photograph to associate a video with that memory. MP4 using H.264 video and AAC audio has broad support. Visitors choose when to play a video; there is no autoplay.
 
-Komprimer videoer før opplasting. Cloudflare Pages har en grense på 25 MiB per enkeltfil; bruk korte klipp under denne grensen hvis du velger denne verten. Se [Cloudflares dokumenterte grenser](https://developers.cloudflare.com/pages/platform/limits/).
+Compress videos before uploading. Cloudflare Pages documents a 25 MiB limit per file, so use short clips below that limit when choosing this host. See [Cloudflare's documented limits](https://developers.cloudflare.com/pages/platform/limits/).
 
-## Tributtrommet
+## The tribute room
 
-Rommet er laget for en levende mors bursdag, kjærlighet og takknemlighet. Det er ikke en rekonstruksjon av en Gurdwara. Ik Onkar står høyt på veggen, separat fra portrettet. Ingen hellige symboler er på gulvet. Teksten inneholder ingen oppdiktede skriftsteder eller religiøse sitater. Familien kan tilpasse de personlige ordene direkte i innholdskonfigurasjonen.
+This is a Sikh-inspired family memorial space for remembering Puja Anand with love and gratitude. It is not a reconstruction of a Gurdwara. Ik Onkar is elevated on the wall, separate from the portrait and walking surfaces. The sacred symbol is preserved; the surrounding prose is English. There are no invented scriptures or religious quotations. Personal words can be edited directly in the content configuration.

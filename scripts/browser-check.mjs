@@ -23,69 +23,75 @@ const base = process.argv[2] || process.env.MUSEUM_URL || 'http://127.0.0.1:5173
 try {
   await page.goto(base, { waitUntil: 'networkidle' });
   await page
-    .getByRole('button', { name: 'Gå inn i museet', exact: true })
+    .getByRole('button', { name: 'Enter the museum', exact: true })
     .waitFor({ state: 'visible', timeout: 60000 });
+  assert.equal(await page.locator('html').getAttribute('lang'), 'en');
+  assert.equal(await page.title(), 'Puja Anand · In Loving Memory');
+  assert.match(
+    await page.locator('.welcome-description').innerText(),
+    /what would have been her 50th birthday/,
+  );
   await page.screenshot({ path: 'artifacts/welcome-desktop.png' });
-  await page.getByRole('button', { name: 'Gå inn i museet', exact: true }).click();
-  await page.getByRole('heading', { name: 'Velkommen hjem', exact: true }).waitFor();
+  await page.getByRole('button', { name: 'Enter the museum', exact: true }).click();
+  await page.getByRole('heading', { name: 'A Place to Remember', exact: true }).waitFor();
   await page.keyboard.down('KeyW');
   await page
-    .getByRole('heading', { name: 'Sjøhestens sal', exact: true })
+    .getByRole('heading', { name: 'The Seahorse Hall', exact: true })
     .waitFor({ timeout: 30000 });
   await page.keyboard.up('KeyW');
   await page.screenshot({ path: 'artifacts/atrium.png' });
   const roomNames = [
-    'De første kapitlene',
-    'Livet vi deler',
-    'Hjertet i familien',
-    'Til deg, mamma',
+    'The First Chapters',
+    'The Life We Shared',
+    'The Heart of Our Family',
+    'Forever Remembered',
   ];
   for (const name of roomNames) {
-    await page.getByRole('button', { name: 'Utforsk museet' }).click();
-    await page.getByRole('button', { name: `Gå til ${name}`, exact: true }).click();
+    await page.getByRole('button', { name: /^Explore the museum/ }).click();
+    await page.getByRole('button', { name: `Go to ${name}`, exact: true }).click();
     await page.getByRole('heading', { name, exact: true }).waitFor();
     await page.waitForTimeout(600);
     await page.screenshot({ path: `artifacts/room-${roomNames.indexOf(name) + 3}.png` });
   }
-  await page.getByRole('button', { name: 'Utforsk museet' }).click();
+  await page.getByRole('button', { name: /^Explore the museum/ }).click();
   await page.screenshot({ path: 'artifacts/map.png' });
-  await page.getByRole('button', { name: 'Gå til Livet vi deler', exact: true }).click();
+  await page.getByRole('button', { name: 'Go to The Life We Shared', exact: true }).click();
   const camera = new PerspectiveCamera(65, 1440 / 960, 0.1, 190);
   camera.position.set(19, 1.7, 4);
   camera.rotation.set(0, -Math.PI / 2, 0, 'YXZ');
   camera.updateMatrixWorld();
   const image = new Vector3(29.64, 3.3, 0).project(camera);
   await page.mouse.click((image.x + 1) * 720, (1 - image.y) * 480);
-  await page.getByRole('dialog', { name: 'Hverdagslykke' }).waitFor();
+  await page.getByRole('dialog', { name: 'Everyday Joy' }).waitFor();
   await page.screenshot({ path: 'artifacts/photo.png' });
   await page.keyboard.press('Escape');
   assert.equal(await page.getByRole('dialog').count(), 0);
-  await page.getByRole('button', { name: 'Slå på naturlyd' }).click();
+  await page.getByRole('button', { name: 'Turn on nature sounds' }).click();
   assert.equal(
-    await page.getByRole('button', { name: 'Slå av naturlyd' }).getAttribute('aria-pressed'),
+    await page.getByRole('button', { name: 'Turn off nature sounds' }).getAttribute('aria-pressed'),
     'true',
   );
-  await page.getByRole('button', { name: 'Slå av naturlyd' }).click();
-  await page.getByRole('button', { name: 'Fri musebevegelse' }).click();
+  await page.getByRole('button', { name: 'Turn off nature sounds' }).click();
+  await page.getByRole('button', { name: 'Free mouse look' }).click();
   await page.waitForFunction(() => Boolean(document.pointerLockElement));
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => !document.pointerLockElement);
-  await page.getByRole('button', { name: 'Meny', exact: true }).click();
-  await page.getByRole('button', { name: 'Start omvisning' }).click();
-  for (let i = 0; i < 5; i++) await page.getByRole('button', { name: 'Neste rom' }).click();
-  await page.getByRole('button', { name: 'Utforsk videre', exact: true }).click();
-  await page.getByRole('button', { name: 'Meny', exact: true }).click();
-  await page.getByLabel('Bildekvalitet').selectOption('low');
-  await page.getByRole('button', { name: 'Tilbake til inngangen' }).click();
-  await page.getByRole('heading', { name: 'Velkommen hjem', exact: true }).waitFor();
+  await page.getByRole('button', { name: 'Menu', exact: true }).click();
+  await page.getByRole('button', { name: 'Start a guided tour' }).click();
+  for (let i = 0; i < 5; i++) await page.getByRole('button', { name: 'Next room' }).click();
+  await page.getByRole('button', { name: 'Keep exploring', exact: true }).click();
+  await page.getByRole('button', { name: 'Menu', exact: true }).click();
+  await page.getByLabel('Visual quality').selectOption('low');
+  await page.getByRole('button', { name: 'Return to the entrance' }).click();
+  await page.getByRole('heading', { name: 'A Place to Remember', exact: true }).waitFor();
   // Verify a missing local asset is handled without taking down the museum.
   await page.route('**/images/family/coast.svg', (route) =>
     route.fulfill({ status: 404, body: 'missing' }),
   );
-  await page.getByRole('button', { name: 'Meny', exact: true }).click();
-  await page.getByRole('button', { name: 'Se alle bildene' }).click();
-  await page.getByRole('button', { name: 'Sammen', exact: true }).click();
-  await page.getByText('Bildet er ikke tilgjengelig ennå.').waitFor();
+  await page.getByRole('button', { name: 'Menu', exact: true }).click();
+  await page.getByRole('button', { name: 'View all photographs' }).click();
+  await page.getByRole('button', { name: 'Together', exact: true }).click();
+  await page.getByText('This photograph is not available yet.').waitFor();
   await page.unroute('**/images/family/coast.svg');
   const mobile = await browser.newContext({
     viewport: { width: 390, height: 844 },
@@ -97,11 +103,11 @@ try {
   phone.on('pageerror', (error) => errors.push(error.message));
   await phone.goto(base, { waitUntil: 'networkidle' });
   await phone
-    .getByRole('button', { name: 'Gå inn i museet', exact: true })
+    .getByRole('button', { name: 'Enter the museum', exact: true })
     .waitFor({ timeout: 60000 });
   await phone.screenshot({ path: 'artifacts/welcome-mobile.png' });
-  await phone.getByRole('button', { name: 'Gå inn i museet', exact: true }).tap();
-  await phone.getByRole('group', { name: 'Styrespak for bevegelse' }).waitFor();
+  await phone.getByRole('button', { name: 'Enter the museum', exact: true }).tap();
+  await phone.getByRole('group', { name: 'Movement joystick' }).waitFor();
   const joystick = phone.locator('.joystick');
   const box = await joystick.boundingBox();
   const touch = await mobile.newCDPSession(phone);
@@ -114,26 +120,26 @@ try {
     touchPoints: [{ x: box.x + 52, y: box.y + 18 }],
   });
   await phone
-    .getByRole('heading', { name: 'Sjøhestens sal', exact: true })
+    .getByRole('heading', { name: 'The Seahorse Hall', exact: true })
     .waitFor({ timeout: 30000 });
   await touch.send('Input.dispatchTouchEvent', { type: 'touchEnd', touchPoints: [] });
   await phone
-    .getByRole('heading', { name: 'Sjøhestens sal', exact: true })
+    .getByRole('heading', { name: 'The Seahorse Hall', exact: true })
     .waitFor({ timeout: 15000 });
   await phone.screenshot({ path: 'artifacts/mobile-explore.png' });
-  await phone.getByRole('button', { name: 'Utforsk museet' }).tap();
-  await phone.getByRole('button', { name: 'Gå til Hjertet i familien', exact: true }).tap();
+  await phone.getByRole('button', { name: /^Explore the museum/ }).tap();
+  await phone.getByRole('button', { name: 'Go to The Heart of Our Family', exact: true }).tap();
   const mobileCamera = new PerspectiveCamera(65, 390 / 844, 0.1, 190);
   mobileCamera.position.set(-20, 1.7, -19);
   mobileCamera.updateMatrixWorld();
   const portrait = new Vector3(-20, 3.55, -29.55).project(mobileCamera);
   await phone.touchscreen.tap((portrait.x + 1) * 195, (1 - portrait.y) * 422);
-  await phone.getByRole('dialog', { name: 'Mamma', exact: true }).waitFor();
-  await phone.getByRole('button', { name: 'Lukk', exact: true }).tap();
-  await phone.getByRole('button', { name: 'Meny', exact: true }).tap();
-  await phone.getByRole('button', { name: 'Se alle bildene' }).tap();
-  await phone.getByRole('button', { name: 'Sammen', exact: true }).tap();
-  await phone.getByRole('dialog', { name: 'Sammen' }).waitFor();
+  await phone.getByRole('dialog', { name: 'Puja Anand', exact: true }).waitFor();
+  await phone.getByRole('button', { name: 'Close', exact: true }).tap();
+  await phone.getByRole('button', { name: 'Menu', exact: true }).tap();
+  await phone.getByRole('button', { name: 'View all photographs' }).tap();
+  await phone.getByRole('button', { name: 'Together', exact: true }).tap();
+  await phone.getByRole('dialog', { name: 'Together' }).waitFor();
   await phone.screenshot({ path: 'artifacts/photo-mobile.png' });
   assert.equal(
     await phone.evaluate(() => document.documentElement.scrollWidth > innerWidth),
@@ -150,8 +156,8 @@ try {
     };
   });
   await fallbackPage.goto(base);
-  await fallbackPage.getByRole('button', { name: 'Se bildene', exact: true }).click();
-  await fallbackPage.getByRole('dialog', { name: 'Alle bilder' }).waitFor();
+  await fallbackPage.getByRole('button', { name: 'View photographs', exact: true }).click();
+  await fallbackPage.getByRole('dialog', { name: 'All photographs' }).waitFor();
   await fallback.close();
   assert.deepEqual(errors, []);
   const unexpected = requests.filter((r) => !r.includes('/images/family/coast.svg'));

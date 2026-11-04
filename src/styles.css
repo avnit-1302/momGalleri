@@ -21,10 +21,10 @@
   pointer-events: none;
   background: linear-gradient(
     180deg,
-    rgba(239, 235, 223, 0.7),
+    rgba(239, 235, 223, 0.28),
     transparent 18%,
     transparent 78%,
-    rgba(235, 231, 217, 0.6)
+    rgba(18, 27, 20, 0.06)
   );
 }
 .topbar {
@@ -975,12 +975,12 @@ button:disabled {
     padding: 20px;
   }
   .brand > span {
-    font-size: 15px;
-    letter-spacing: 4px;
+    font-size: 13px;
+    letter-spacing: 2px;
   }
   .brand small {
-    font-size: 6px;
-    letter-spacing: 1.5px;
+    font-size: 5.5px;
+    letter-spacing: 1px;
   }
   .brand {
     gap: 8px;

@@ -14,10 +14,10 @@ export const rooms: Room[] = [
   {
     id: 'entrance',
     number: '01',
-    name: 'Velkommen hjem',
-    subtitle: 'Den store inngangshallen',
+    name: 'A Place to Remember',
+    subtitle: 'The grand entrance hall',
     description:
-      'Et museum skapt av kjærlighet. Ta deg god tid. Her begynner en feiring av mamma og alle øyeblikkene som betyr noe.',
+      'A museum created in loving memory of Puja Anand. Take your time as you remember her life and the moments you shared, on what would have been her 50th birthday.',
     bounds: [-10, 10, 12, 28],
     spawn: [0, 1.7, 24],
     yaw: 0,
@@ -25,10 +25,10 @@ export const rooms: Room[] = [
   {
     id: 'atrium',
     number: '02',
-    name: 'Sjøhestens sal',
-    subtitle: 'Et stille midtpunkt',
+    name: 'The Seahorse Hall',
+    subtitle: 'A quiet centrepiece',
     description:
-      'En original sjøhest i bronse, omgitt av vann og lys. Gå hele veien rundt skulpturen, og la blikket vandre opp mot himmelen.',
+      'An original bronze seahorse, surrounded by water and light. Walk around the sculpture and look up towards the sky. A quiet moment to pause and reflect.',
     bounds: [-10, 10, -12, 12],
     spawn: [0, 1.7, 8.8],
     yaw: 0,
@@ -36,10 +36,10 @@ export const rooms: Room[] = [
   {
     id: 'childhood',
     number: '03',
-    name: 'De første kapitlene',
-    subtitle: 'Barndom og tidlige minner',
+    name: 'The First Chapters',
+    subtitle: 'Childhood and early memories',
     description:
-      'Her får de første fotografiene og historiene sin plass. Velg et bilde på veggen for å komme nærmere.',
+      'A space for photographs and stories from the early chapters of Puja Anand’s life. Select a picture on the wall to look more closely and read its memory.',
     bounds: [-30, -10, -12, 12],
     spawn: [-19, 1.7, 4],
     yaw: Math.PI / 2,
@@ -47,10 +47,10 @@ export const rooms: Room[] = [
   {
     id: 'family',
     number: '04',
-    name: 'Livet vi deler',
-    subtitle: 'Familie, kjærlighet og liv',
+    name: 'The Life We Shared',
+    subtitle: 'Family, love and treasured memories',
     description:
-      'De store dagene. De små øyeblikkene. Et varmt rom for fotografier av menneskene og minnene som hører sammen.',
+      'The special occasions and the everyday moments. A warm space for photographs of the people and memories that were part of Puja Anand’s life.',
     bounds: [10, 30, -12, 12],
     spawn: [19, 1.7, 4],
     yaw: -Math.PI / 2,
@@ -58,10 +58,10 @@ export const rooms: Room[] = [
   {
     id: 'sanctuary',
     number: '05',
-    name: 'Hjertet i familien',
-    subtitle: 'Kjærlighet og takknemlighet',
+    name: 'The Heart of Our Family',
+    subtitle: 'Love, gratitude and remembrance',
     description:
-      'Et rolig, sikh-inspirert familierom for takknemlighet og refleksjon. Sett deg et øyeblikk, og gi plass til alt du setter pris på.',
+      'A peaceful, Sikh-inspired family tribute to Puja Anand. Pause here to remember her with love and gratitude, and reflect on the place she holds in your heart.',
     bounds: [-30, -10, -30, -12],
     spawn: [-20, 1.7, -19],
     yaw: 0,
@@ -69,10 +69,10 @@ export const rooms: Room[] = [
   {
     id: 'celebration',
     number: '06',
-    name: 'Til deg, mamma',
-    subtitle: 'En feiring av 50 år',
+    name: 'Forever Remembered',
+    subtitle: 'Honouring Puja Anand’s memory',
     description:
-      'Et nytt kapittel begynner. Gratulerer med dagen, mamma — og takk for alle minnene vi får skape videre, sammen.',
+      'On what would have been Puja Anand’s 50th birthday, we honour her life and remember the love she shared. The moments we had with her remain part of us.',
     bounds: [-10, 30, -30, -12],
     spawn: [10, 1.7, -21],
     yaw: 0,

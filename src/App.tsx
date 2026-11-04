@@ -58,7 +58,7 @@ function SafeImage({ src, alt, className = '' }: { src: string; alt: string; cla
   return failed ? (
     <div className={`missing-image ${className}`}>
       <Icon name="image" size={36} />
-      <p>Bildet er ikke tilgjengelig ennå.</p>
+      <p>This photograph is not available yet.</p>
     </div>
   ) : (
     <img src={assetUrl(src)} alt={alt} className={className} onError={() => setFailed(true)} />
@@ -67,7 +67,9 @@ function SafeImage({ src, alt, className = '' }: { src: string; alt: string; cla
 function VideoMessage({ src }: { src: string }) {
   const [failed, setFailed] = useState(false);
   return failed ? (
-    <p className="muted">Videohilsenen kunne ikke lastes. Prøv igjen når filen er tilgjengelig.</p>
+    <p className="muted">
+      The video could not be loaded. Please try again when the file is available.
+    </p>
   ) : (
     <video
       className="message-video"
@@ -145,9 +147,9 @@ export default function App() {
     try {
       const canvas = document.querySelector('canvas');
       if (canvas?.requestPointerLock) await canvas.requestPointerLock();
-      else setNotice('Dra i rommet for å se deg rundt.');
+      else setNotice('Drag in the room to look around.');
     } catch {
-      setNotice('Dra i rommet for å se deg rundt.');
+      setNotice('Drag in the room to look around.');
     }
   };
   const fullscreen = async () => {
@@ -155,7 +157,7 @@ export default function App() {
       if (document.fullscreenElement) await document.exitFullscreen();
       else await document.documentElement.requestFullscreen();
     } catch {
-      setNotice('Fullskjerm er ikke tilgjengelig i denne nettleseren.');
+      setNotice('Full screen is not available in this browser.');
     }
   };
   const iconButton = (name: IconName, label: string, action: () => void, pressed?: boolean) => (
@@ -173,7 +175,7 @@ export default function App() {
     photoIndex = currentPhotos.findIndex((p) => p.id === selected?.id);
   return (
     <main className={entered ? 'app exploring' : 'app welcoming'}>
-      <div className="scene" aria-label="Et tredimensjonalt museum i en skog">
+      <div className="scene" aria-label="A three-dimensional memorial museum in a forest">
         {supported && (
           <SceneBoundary onError={onFailure}>
             <Suspense fallback={null}>
@@ -204,35 +206,36 @@ export default function App() {
             setPanel(null);
             setTour(null);
           }}
-          aria-label="Til velkomstsiden"
+          aria-label="Return to the welcome screen"
         >
           <SeahorseMark />
           <span>
-            MAMMA<small>ET MUSEUM AV KJÆRLIGHET</small>
+            {museumContent.mother.name}
+            <small>A MUSEUM OF REMEMBRANCE</small>
           </span>
         </button>
         {!entered ? (
           <div className="top-note">
-            <span className="status-dot" /> EN HELT SPESIELL 50-ÅRSDAG
+            <span className="status-dot" /> ON WHAT WOULD HAVE BEEN HER 50TH BIRTHDAY
           </div>
         ) : (
           <div className="top-actions">
             {iconButton(
               sound.enabled ? 'sound' : 'muted',
-              sound.enabled ? 'Slå av naturlyd' : 'Slå på naturlyd',
+              sound.enabled ? 'Turn off nature sounds' : 'Turn on nature sounds',
               () => void sound.toggle(),
               sound.enabled,
             )}
             {document.fullscreenEnabled &&
               iconButton(
                 'expand',
-                full ? 'Avslutt fullskjerm' : 'Fullskjerm',
+                full ? 'Exit full screen' : 'Full screen',
                 () => void fullscreen(),
                 full,
               )}
             <button className="pill-button" onClick={() => open('menu')}>
               <Icon name="menu" />
-              <span>Meny</span>
+              <span>Menu</span>
             </button>
           </div>
         )}
@@ -241,19 +244,18 @@ export default function App() {
         <section className="welcome">
           <div className="welcome-copy">
             <div className="eyebrow">
-              <span className="fine-line" /> EN UTSTILLING TIL DEG
+              <span className="fine-line" /> IN LOVING MEMORY
             </div>
             <h1>
-              Et helt liv.
-              <br />
-              Så mye <em>kjærlighet.</em>
+              A life remembered.
+              <br />A love that <em>stays.</em>
             </h1>
             <p className="welcome-description">
-              Et museum gjemt i skogen.
+              A quiet place to remember Puja Anand.
               <br />
-              Seks rom. Utallige øyeblikk.
+              Six rooms of love and treasured memories.
               <br />
-              Og én helt enestående mamma.
+              On what would have been her 50th birthday.
             </p>
             <div className="welcome-cta">
               <button
@@ -261,42 +263,45 @@ export default function App() {
                 disabled={supported && !ready}
                 onClick={() => (supported ? setEntered(true) : open('collection'))}
               >
-                {!supported ? 'Se bildene' : ready ? 'Gå inn i museet' : 'Åpner museet …'}
+                {!supported
+                  ? 'View photographs'
+                  : ready
+                    ? 'Enter the museum'
+                    : 'Opening the museum …'}
                 {ready || !supported ? <Icon name="arrow" /> : <span className="spinner" />}
               </button>
               {supported && (
                 <button className="text-button" disabled={!ready} onClick={startTour}>
-                  Ta en omvisning <span>↗</span>
+                  Take a guided tour <span>↗</span>
                 </button>
               )}
             </div>
             <div className="welcome-instructions">
               <Icon name="mouse" size={16} />
-              <span className="desktop-copy">WASD for å gå · Dra med musen for å se</span>
-              <span className="mobile-copy">Bruk styrespaken · Dra for å se deg rundt</span>
+              <span className="desktop-copy">WASD to walk · Drag the mouse to look around</span>
+              <span className="mobile-copy">Use the joystick · Drag to look around</span>
             </div>
           </div>
           <div className="anniversary">
-            <span>50</span>
+            <span>{museumContent.mother.commemorativeBirthday}</span>
             <div>
-              ÅR MED
+              IN LOVING
               <br />
-              KJÆRLIGHET
+              MEMORY
             </div>
           </div>
           <div className="welcome-caption">
-            <span>02 / SJØHESTENS SAL</span>
+            <span>02 / THE SEAHORSE HALL</span>
             <p>
-              Et stille øyeblikk.
-              <br />
-              En verden av minner.
+              A quiet moment.
+              <br />A world of memories.
             </p>
             <span className="caption-rule" />
           </div>
           <footer className="welcome-footer">
-            <span>LAGET MED KJÆRLIGHET, TIL MAMMA</span>
+            <span>IN LOVING MEMORY OF PUJA ANAND</span>
             <span>
-              UTFORSK I DITT EGET TEMPO <span className="tiny-arrow">↗</span>
+              EXPLORE AT YOUR OWN PACE <span className="tiny-arrow">↗</span>
             </span>
           </footer>
         </section>
@@ -323,47 +328,47 @@ export default function App() {
                     if (p) select(p);
                   }}
                 >
-                  <span className="keycap">E</span> Se «
-                  {photographs.find((p) => p.id === target)?.title}»
+                  <span className="keycap">E</span> View “
+                  {photographs.find((p) => p.id === target)?.title}”
                 </button>
               )}
               <TouchControls input={input} />
             </>
           )}
-          <nav className="bottom-bar" aria-label="Museumsnavigasjon">
+          <nav className="bottom-bar" aria-label="Museum navigation">
             <button className="map-button" onClick={() => open('map')}>
               <Icon name="map" />
-              <span>Utforsk museet</span>
+              <span>Explore the museum</span>
               <span className="keycap">M</span>
             </button>
             <div className="walking-hint">
               {locked ? (
                 <>
-                  <span className="keycap">ESC</span> Frigjør musen
+                  <span className="keycap">ESC</span> Release the mouse
                 </>
               ) : (
                 <button className="text-button" onClick={() => void lock()}>
-                  <Icon name="mouse" size={16} /> Fri musebevegelse
+                  <Icon name="mouse" size={16} /> Free mouse look
                 </button>
               )}
-              <span className="hint-divider" />W A S D <span className="muted">for å gå</span>
+              <span className="hint-divider" />W A S D <span className="muted">to walk</span>
             </div>
             <button
               className="help-button"
               onClick={() => open('help')}
-              aria-label="Slik utforsker du museet"
+              aria-label="How to explore the museum"
             >
               <Icon name="help" />
-              <span>Slik utforsker du</span>
+              <span>How to explore</span>
             </button>
           </nav>
           {tour !== null && !panel && (
-            <section className="tour-card" aria-label="Omvisning">
+            <section className="tour-card" aria-label="Guided tour">
               <div className="tour-heading">
-                <span className="eyebrow">OMVISNING · {tour + 1} AV 6</span>
+                <span className="eyebrow">GUIDED TOUR · {tour + 1} OF 6</span>
                 <button
                   className="icon-button"
-                  aria-label="Avslutt omvisning"
+                  aria-label="End the guided tour"
                   onClick={() => setTour(null)}
                 >
                   <Icon name="close" size={16} />
@@ -377,42 +382,42 @@ export default function App() {
                   disabled={tour === 0}
                   onClick={() => tourStep(tour - 1)}
                 >
-                  ← Forrige
+                  ← Previous
                 </button>
                 <button
                   className="text-button"
                   onClick={() => (tour === 5 ? setTour(null) : tourStep(tour + 1))}
                 >
-                  {tour === 5 ? 'Utforsk videre' : 'Neste rom'} <Icon name="arrow" size={16} />
+                  {tour === 5 ? 'Keep exploring' : 'Next room'} <Icon name="arrow" size={16} />
                 </button>
               </div>
             </section>
           )}
           {room === 'celebration' && museumContent.celebrationVideo && !panel && (
             <button className="video-hotspot pill-button" onClick={() => open('video')}>
-              <Icon name="play" /> Se bursdagshilsen
+              <Icon name="play" /> Watch shared memories
             </button>
           )}
         </>
       )}
       {!supported && entered && (
         <div className="unsupported">
-          <h2>Minnene er fortsatt her.</h2>
+          <h2>The memories are still here.</h2>
           <p>
-            3D-visningen er ikke tilgjengelig på denne enheten. Du kan fortsatt se alle bildene og
-            lese historiene.
+            The 3D experience is not available on this device. You can still view all the
+            photographs and read their stories.
           </p>
           <button className="primary-button" onClick={() => open('collection')}>
-            Se bildene <Icon name="arrow" />
+            View photographs <Icon name="arrow" />
           </button>
           <button className="text-button" onClick={() => location.reload()}>
-            Prøv 3D-visningen igjen
+            Try the 3D experience again
           </button>
         </div>
       )}
       {!supported && !entered && (
         <div className="support-note">
-          Denne enheten kan ikke vise 3D. Bildevisningen er tilgjengelig.
+          This device cannot display 3D. You can still view the photographs.
         </div>
       )}
       {notice && (
@@ -424,16 +429,16 @@ export default function App() {
         <Dialog
           title={
             panel === 'photo'
-              ? (selected?.title ?? 'Fotografi')
+              ? (selected?.title ?? 'Photograph')
               : panel === 'map'
-                ? 'Museumskart'
+                ? 'Museum map'
                 : panel === 'help'
-                  ? 'Slik utforsker du'
+                  ? 'How to explore'
                   : panel === 'collection'
-                    ? 'Alle bilder'
+                    ? 'All photographs'
                     : panel === 'video'
-                      ? 'Bursdagshilsen'
-                      : 'Museumsmeny'
+                      ? 'Memories of Puja Anand'
+                      : 'Museum menu'
           }
           onClose={close}
           className={
@@ -458,18 +463,18 @@ export default function App() {
           )}
           {panel === 'menu' && (
             <>
-              <span className="eyebrow">DITT BESØK</span>
-              <h2>Ta deg god tid.</h2>
-              <p className="muted">Alle øyeblikkene venter på deg.</p>
+              <span className="eyebrow">YOUR VISIT</span>
+              <h2>Take your time.</h2>
+              <p className="muted">A space to remember, at your own pace.</p>
               <div className="menu-links">
                 <button onClick={() => open('map')}>
-                  <Icon name="map" /> Museumskart <span>↗</span>
+                  <Icon name="map" /> Museum map <span>↗</span>
                 </button>
                 <button onClick={startTour}>
-                  <Icon name="play" /> Start omvisning <span>↗</span>
+                  <Icon name="play" /> Start a guided tour <span>↗</span>
                 </button>
                 <button onClick={() => open('collection')}>
-                  <Icon name="image" /> Se alle bildene <span>↗</span>
+                  <Icon name="image" /> View all photographs <span>↗</span>
                 </button>
                 <button
                   onClick={() => {
@@ -477,65 +482,66 @@ export default function App() {
                     navigate('entrance');
                   }}
                 >
-                  <Icon name="home" /> Tilbake til inngangen <span>↗</span>
+                  <Icon name="home" /> Return to the entrance <span>↗</span>
                 </button>
                 <button onClick={() => open('help')}>
-                  <Icon name="help" /> Slik utforsker du <span>↗</span>
+                  <Icon name="help" /> How to explore <span>↗</span>
                 </button>
               </div>
               <div className="setting">
-                <label htmlFor="quality">Bildekvalitet</label>
+                <label htmlFor="quality">Visual quality</label>
                 <select
                   id="quality"
                   value={quality}
                   onChange={(e) => setQuality(e.target.value as Quality)}
                 >
-                  <option value="auto">Automatisk</option>
-                  <option value="high">Høy</option>
-                  <option value="low">Lett · for enklere enheter</option>
+                  <option value="auto">Automatic</option>
+                  <option value="high">High</option>
+                  <option value="low">Low · for less powerful devices</option>
                 </select>
               </div>
               <button className="sound-setting" onClick={() => void sound.toggle()}>
-                <Icon name={sound.enabled ? 'sound' : 'muted'} /> Naturlyd{' '}
-                <span>{sound.enabled ? 'På' : 'Av'}</span>
+                <Icon name={sound.enabled ? 'sound' : 'muted'} /> Nature sounds{' '}
+                <span>{sound.enabled ? 'On' : 'Off'}</span>
               </button>
             </>
           )}
           {panel === 'help' && (
             <>
-              <span className="eyebrow">VELKOMMEN INN</span>
-              <h2>Finn din egen rytme.</h2>
-              <p className="muted">Ingen riktig rekkefølge. Ingen hastverk.</p>
+              <span className="eyebrow">WELCOME</span>
+              <h2>Find your own pace.</h2>
+              <p className="muted">No set route. No need to hurry.</p>
               <div className="instructions-grid">
                 <div>
                   <Icon name="mouse" size={26} />
-                  <h3>På datamaskin</h3>
+                  <h3>On a computer</h3>
                   <p>
-                    Gå med <b>W A S D</b> eller piltastene. Hold <b>Shift</b> for å gå raskere. Dra
-                    med musen for å se deg rundt.
+                    Walk with <b>W A S D</b> or the arrow keys. Hold <b>Shift</b> to walk faster.
+                    Drag the mouse to look around.
                   </p>
                   <p>
-                    Velg «Fri musebevegelse» for å låse musen. <b>Esc</b> frigjør den igjen.
+                    Choose “Free mouse look” to lock the pointer. Press <b>Esc</b> to release it.
                   </p>
                 </div>
                 <div>
                   <Icon name="sun" size={26} />
-                  <h3>På mobil og nettbrett</h3>
+                  <h3>On a phone or tablet</h3>
                   <p>
-                    Bruk styrespaken nederst til venstre for å gå. Dra med en finger i rommet for å
-                    se deg rundt.
+                    Use the joystick in the bottom left to walk. Drag a finger across the room to
+                    look around.
                   </p>
-                  <p>Trykk på et bilde for å åpne det.</p>
+                  <p>Tap a photograph to open it.</p>
                 </div>
               </div>
               <div className="help-note">
                 <p>
-                  <b>Kom nærmere minnene.</b> Klikk på bildene, eller se mot et bilde og trykk E.
-                  Kartet lar deg gå direkte til et rom. Du kan også se alle bildene fra menyen.
+                  <b>Take a closer look.</b> Click a photograph, or look towards it and press E. The
+                  map takes you directly to any room. You can also view all photographs from the
+                  menu.
                 </p>
               </div>
               <button className="primary-button" onClick={close}>
-                Jeg er klar <Icon name="arrow" />
+                Start exploring <Icon name="arrow" />
               </button>
             </>
           )}
@@ -551,9 +557,7 @@ export default function App() {
                 </span>
                 <h2>{selected.title}</h2>
                 {selected.placeholder && (
-                  <span className="placeholder-label">
-                    Eksempelbilde · plass til ditt eget fotografi
-                  </span>
+                  <span className="placeholder-label">Placeholder · add your own photograph</span>
                 )}
                 <p>{selected.description}</p>
                 {selected.video && <VideoMessage key={selected.video} src={selected.video} />}
@@ -563,7 +567,7 @@ export default function App() {
                     disabled={photoIndex <= 0}
                     onClick={() => setSelected(currentPhotos[photoIndex - 1])}
                   >
-                    ← Forrige
+                    ← Previous
                   </button>
                   <span>
                     {photoIndex + 1} / {currentPhotos.length}
@@ -573,7 +577,7 @@ export default function App() {
                     disabled={photoIndex >= currentPhotos.length - 1}
                     onClick={() => setSelected(currentPhotos[photoIndex + 1])}
                   >
-                    Neste →
+                    Next →
                   </button>
                 </div>
               </div>
@@ -581,9 +585,9 @@ export default function App() {
           )}
           {panel === 'collection' && (
             <>
-              <span className="eyebrow">MINNENE VÅRE</span>
-              <h2>Et øyeblikk om gangen.</h2>
-              <p className="muted">Alle bildene fra museet, samlet på ett sted.</p>
+              <span className="eyebrow">OUR MEMORIES</span>
+              <h2>One moment at a time.</h2>
+              <p className="muted">All the photographs from the museum, together in one place.</p>
               {rooms
                 .filter((r) => photographs.some((p) => p.room === r.id))
                 .map((r) => (
@@ -607,8 +611,8 @@ export default function App() {
           )}
           {panel === 'video' && (
             <>
-              <span className="eyebrow">EN HILSEN TIL DEG</span>
-              <h2>Gratulerer med dagen.</h2>
+              <span className="eyebrow">SHARED MEMORIES</span>
+              <h2>Remembering Puja Anand.</h2>
               <VideoMessage src={museumContent.celebrationVideo} />
               <p>{museumContent.mother.ending}</p>
             </>

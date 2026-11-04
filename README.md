@@ -1,57 +1,61 @@
-# Mamma · 50 år med kjærlighet
+# Puja Anand · In Loving Memory
 
-Et ferdig, statisk 3D-museum til en levende mammas 50-årsdag. Seks sammenhengende rom i en skog, en original sjøhestskulptur i bronse, interaktive bilder og et sikh-inspirert rom for kjærlighet og takknemlighet.
+A static 3D memorial museum honouring the late Puja Anand on what would have been her 50th birthday. Six connected rooms in a forest, an original bronze seahorse sculpture, interactive photographs, and a Sikh-inspired space for remembrance and gratitude.
 
-Ingen database, API-nøkler, abonnementer eller eksterne innholdstjenester. Bilder, skrifter, geometri og lyd er lokale eller generert i nettleseren. Eksempelbildene er originale naturillustrasjoner og et tydelig merket portrettfelt. Ingen familiemedlemmer eller familiehistorier er oppdiktet.
+The experience is entirely in English. Its wording remembers her life and the love she shared; it does not present her as still living or imply that she lived to 50. No family history, dates of birth or death, or personal stories have been invented.
 
-## Start på din maskin
+No database, API keys, subscriptions, or external content services are required. Photographs, fonts, geometry, and sound are local or generated in the browser. The example images are original nature illustrations and a clearly marked portrait placeholder.
 
-Installer Node.js 22.12 eller nyere. Kjør i prosjektmappen:
+## Run locally
+
+Install Node.js 22.12 or later. From the project folder:
 
 ```sh
 npm ci
 npm run dev
 ```
 
-Åpne adressen Vite skriver ut, vanligvis `http://127.0.0.1:5173`. Den første installasjonen trenger internett. Deretter fungerer museet uten eksterne nettverksforespørsler.
+Open the address printed by Vite, normally `http://127.0.0.1:5173`. The first installation requires an internet connection. The museum itself makes no external content requests.
 
-For å prøve på en telefon i samme nettverk:
+To try it on a phone connected to the same network:
 
 ```sh
 npm run dev -- --host 0.0.0.0
 ```
 
-Åpne nettverksadressen fra Vite på telefonen. Tillat om nødvendig Node på det private nettverket i Windows-brannmuren.
+Open Vite's network address on the phone. If needed, allow Node on your private network in Windows Firewall.
 
-## Gjør gaven personlig
+## Personalise the memorial
 
-Alt innhold ligger i [`src/content/museumContent.ts`](src/content/museumContent.ts). Du trenger ikke endre 3D-koden.
+Edit [`src/content/museumContent.ts`](src/content/museumContent.ts). No changes to the 3D rendering code are needed.
 
-1. Legg et portrett i `public/images/mother/mamma.jpg`.
-2. Endre `mother.portrait` til `images/mother/mamma.jpg` og `portraitIsPlaceholder` til `false`. Portrettet oppdateres automatisk i inngangshallen, familietributten og bursdagsrommet.
-3. Bytt eksempelbildenes `image`, `title` og `description`. Sett `placeholder: false` når du legger til et eget bilde.
-4. Tilpass `welcome`, `tributeHeading`, `tribute` og `ending`.
-5. Legg eventuelt en lokal MP4-fil i `public/videos/`, og sett `celebrationVideo` til `videos/bursdagshilsen.mp4`.
+1. Place a portrait at `public/images/mother/puja-anand.jpg`.
+2. Set `mother.portrait` to `images/mother/puja-anand.jpg` and `portraitIsPlaceholder` to `false`. It is reused in the entrance, family tribute, and remembrance gallery.
+3. Replace the example photographs' `image`, `title`, and `description`. Set `placeholder: false` for each real photograph.
+4. Personalise `welcome`, `tributeHeading`, `tribute`, and `ending` with your family's memories.
+5. Optionally place a video in `public/videos/` and set `celebrationVideo` to `videos/remembering-puja.mp4`.
 
-Full veiledning og plasseringseksempler finnes i [docs/CONTENT.md](docs/CONTENT.md).
+The internal `celebration` room ID and related configuration fields are retained for compatibility; this room is presented to visitors as **Forever Remembered**. `commemorativeBirthday` identifies the birthday being remembered, not her age at death.
 
-## Besøket
+See [the content guide](docs/CONTENT.md) for examples and placement instructions.
 
-| På datamaskin                           | Handling                                            |
-| --------------------------------------- | --------------------------------------------------- |
-| WASD / piltaster                        | Gå                                                  |
-| Shift                                   | Gå raskere                                          |
-| Dra med musen                           | Se deg rundt                                        |
-| «Fri musebevegelse»                     | Lås musepekeren for fri kamerabevegelse             |
-| Esc                                     | Frigjør musepekeren / lukk et bilde eller en dialog |
-| Klikk på et bilde / E når du ser på det | Se bildet og historien                              |
-| M / H                                   | Åpne kart / hjelp                                   |
+## Visitor controls
 
-Mobil og nettbrett har en styrespak for bevegelse og berøring for å snu kameraet og åpne bilder. Kartet gir direkte tilgang til alle seks rom. Omvisningen følger seks kuraterte stopp som du går videre fra selv. Lyd er alltid av ved oppstart. Menyen har lavere bildekvalitet og tilbakestilling til inngangen.
+| Computer control                           | Action                                             |
+| ------------------------------------------ | -------------------------------------------------- |
+| WASD / arrow keys                          | Walk                                               |
+| Shift                                      | Walk faster                                        |
+| Drag the mouse                             | Look around                                        |
+| Free mouse look                            | Lock the pointer for free camera movement          |
+| Esc                                        | Release the pointer / close a photograph or dialog |
+| Click a photograph / E while looking at it | View the photograph and its story                  |
+| M / H                                      | Open the map / help                                |
 
-«Se alle bildene» er også tilgjengelig uten WebGL. Dialogene har fokusstyring, tastaturnavigasjon og støtte for Esc. Bevegelse stopper mens en dialog er åpen eller nettleseren mister fokus.
+Phones and tablets have a movement joystick and touch controls for looking around and opening photographs. The map provides direct access to every room. The guided tour follows six stops, with visitors choosing when to move on. Sound is off at startup. The menu includes a lower visual quality setting and a return-to-entrance option.
 
-## Bygg og kontroller
+The photograph collection also works without WebGL. Dialogs support focus management, keyboard navigation, and Escape. Movement pauses while a dialog is open or the browser loses focus.
+
+## Build and verify
 
 ```sh
 npm test
@@ -59,38 +63,38 @@ npm run build
 npm run preview
 ```
 
-Bygget ligger i `dist/`. Det kan lastes opp direkte til en statisk vert. Åpne det gjennom en webserver, ikke ved å dobbeltklikke `index.html`.
+The static build is written to `dist/`. Serve it through a web server rather than double-clicking `index.html`.
 
-Nettlesertestene bruker Playwright med en lokalt installert Google Chrome. Start utviklingsserveren i en terminal, og kjør i en annen:
+Browser checks use Playwright and a locally installed Google Chrome. Start the development server in one terminal, then run:
 
 ```sh
 npm run test:browser
 ```
 
-Testene dekker desktopbevegelse, kart, bilder, omvisning, mobilberøring, manglende bilder og WebGL-fallback. Resultater og skjermbilder lagres i den Git-ignorerte mappen `artifacts/`. `MUSEUM_URL` kan settes for å teste et annet lokalt endepunkt. Mobiltesten emulerer berøring i Chrome; en siste gjennomgang på familiens faktiske telefoner anbefales før deling.
+The checks cover desktop movement, room navigation, photographs, the guided tour, touch controls, missing images, and the WebGL fallback. Results and screenshots are saved in the Git-ignored `artifacts/` folder. Pass a different server address as an argument, or set `MUSEUM_URL`, to test a production preview. Mobile checks emulate touch in Chrome; also review the experience on the family's actual devices before sharing.
 
-## Publiser gratis
+## Deployment
 
-Se [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) for Cloudflare Pages, Netlify og Vercel, inkludert hvordan museet fjernes etter feiringen. Ingen publisering eller push til GitHub er utført automatisk.
+See [the deployment guide](docs/DEPLOYMENT.md) for Cloudflare Pages, Netlify, and Vercel, including removing the site afterwards. Publishing is a separate step; editing this local project does not publish it or push it to GitHub.
 
-## Prosjektstruktur
+## Project structure
 
 ```text
 src/
-  content/museumContent.ts      Portrett, fotografier og personlige tekster
-  world/layout.ts              Rom, vegger, kartposisjoner og kollisjoner
-  world/Museum.tsx             Canvas, dagslys og kvalitetsnivåer
-  world/Architecture.tsx       Gulv, vegger, glass, interiør og skilt
-  world/Seahorse.tsx           Original parametrisk 3D-skulptur
-  world/Nature.tsx             Instansierte trær, busker og planter
-  world/GalleryFrame.tsx       Bilder, rammer, lys og teksturlasting
-  world/VisitorControls.tsx    Kamera, WASD, berøring og interaksjon
-  ui/                         Kart, dialoger, berøring og naturlyd
-public/images/                Lokale bildearkiver
-public/videos/                Valgfrie videohilsener
-tests/                        Tester for innhold og navigasjon
+  content/museumContent.ts      Portrait, photographs, and personal memories
+  world/layout.ts              Rooms, walls, map coordinates, and collisions
+  world/Museum.tsx             Canvas, daylight, and quality settings
+  world/Architecture.tsx       Floors, walls, glass, interiors, and signs
+  world/Seahorse.tsx           Original parametric 3D sculpture
+  world/Nature.tsx             Instanced trees, bushes, rocks, and plants
+  world/GalleryFrame.tsx       Photographs, frames, lighting, and textures
+  world/VisitorControls.tsx    Camera, keyboard, touch, and interaction
+  ui/                         Map, dialogs, touch controls, and nature sounds
+public/images/                Local photographs and placeholders
+public/videos/                Optional videos of shared memories
+tests/                        Navigation and content checks
 ```
 
-Vegetasjonen gjenbruker geometri gjennom instanser. Bilder lastes når besøkeren nærmer seg, og GPU-teksturene begrenses til 1024 piksler. Bildevisningen bruker originalfilen. Skygger bruker ett hovedlys; automatisk kvalitet slår dem av på berøringsenheter. Pixel ratio begrenses til 1–1,5. Ingen tunge etterbehandlingseffekter eller eksterne 3D-modeller er nødvendig.
+Vegetation reuses geometry through instancing. Photographs load as visitors approach, with GPU textures limited to 1024 pixels; the photograph viewer loads the original file. One main light casts shadows, disabled automatically on touch devices. Device pixel ratio is limited to 1–1.5. No heavy post-processing or external 3D models are needed.
 
-Se [docs/ASSETS.md](docs/ASSETS.md) for opphav, fonter og utskifting av skulpturen.
+See [asset credits](docs/ASSETS.md) for origins, font licences, and replacing the sculpture.

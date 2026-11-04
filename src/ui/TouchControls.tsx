@@ -13,7 +13,7 @@ export function TouchControls({ input }: { input: MutableRefObject<VisitorInput>
       <div
         className="joystick"
         role="group"
-        aria-label="Styrespak for bevegelse"
+        aria-label="Movement joystick"
         onPointerDown={(e) => {
           if (pointer.current !== null) return;
           pointer.current = e.pointerId;
@@ -41,7 +41,7 @@ export function TouchControls({ input }: { input: MutableRefObject<VisitorInput>
           style={{ transform: `translate(${knob.x}px,${knob.y}px)` }}
         />
       </div>
-      <span className="touch-look">Dra i rommet for å se deg rundt</span>
+      <span className="touch-look">Drag in the room to look around</span>
     </div>
   );
 }

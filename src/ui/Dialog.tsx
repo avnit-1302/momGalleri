@@ -70,7 +70,7 @@ export function Dialog({
         aria-label={title}
         tabIndex={-1}
       >
-        <button className="icon-button close-button" aria-label="Lukk" onClick={onClose}>
+        <button className="icon-button close-button" aria-label="Close" onClick={onClose}>
           <Icon name="close" />
         </button>
         {children}

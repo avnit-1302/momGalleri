@@ -11,14 +11,14 @@ export function MuseumMap({
 }) {
   return (
     <>
-      <span className="eyebrow">FINN DIN EGEN VEI</span>
-      <h2>Seks rom. Ett hjerte.</h2>
-      <p className="muted">Velg et rom på kartet, eller fortsett til fots.</p>
+      <span className="eyebrow">FIND YOUR OWN WAY</span>
+      <h2>Six rooms. One cherished life.</h2>
+      <p className="muted">Choose a room on the map, or continue on foot.</p>
       <svg
         className="museum-map"
         viewBox="-33 -34 66 65"
         role="img"
-        aria-label="Etasjekart over museets seks rom"
+        aria-label="Floor plan of the six museum rooms"
       >
         {rooms.map((room) => {
           const [x1, x2, z1, z2] = room.bounds;
@@ -27,7 +27,7 @@ export function MuseumMap({
               key={room.id}
               role="button"
               tabIndex={0}
-              aria-label={`Gå til ${room.name}`}
+              aria-label={`Go to ${room.name}`}
               onClick={() => onNavigate(room.id)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
@@ -48,7 +48,7 @@ export function MuseumMap({
                 {room.number}
               </text>
               <text x={(x1 + x2) / 2} y={(z1 + z2) / 2 + 2} className="map-label">
-                {room.id === 'sanctuary' ? 'Hjertet i familien' : room.name}
+                {room.id === 'sanctuary' ? 'The Heart of Our Family' : room.name}
               </text>
             </g>
           );
@@ -57,7 +57,7 @@ export function MuseumMap({
         <circle cx={position[0]} cy={position[1]} r=".8" className="map-visitor" />
       </svg>
       <div className="map-key">
-        <span className="map-dot" /> Du er her <span>Alle rom ligger på samme plan</span>
+        <span className="map-dot" /> You are here <span>All rooms are on one level</span>
       </div>
       <div className="room-list">
         {rooms.map((room) => (
