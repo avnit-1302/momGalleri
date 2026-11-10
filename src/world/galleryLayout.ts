@@ -9,9 +9,10 @@ export const MAIN_GALLERY = {
   portrait: [10, 3.5, -47.63] as Vec3,
 };
 
+// Four works flank the central portrait symmetrically; the remaining ten fill the side walls.
 // Clockwise around the perimeter; all frames have a solid wall behind them.
 export const natureSlots: { position: Vec3; rotation: number }[] = [
-  ...[-5, 0, 5, 15, 20, 25].map((x) => ({ position: [x, 3.3, -47.72] as Vec3, rotation: 0 })),
+  ...[-4, 3, 17, 24].map((x) => ({ position: [x, 3.3, -47.72] as Vec3, rotation: 0 })),
   ...[-44, -37, -30, -22].map((z) => ({
     position: [29.72, 3.3, z] as Vec3,
     rotation: -Math.PI / 2,

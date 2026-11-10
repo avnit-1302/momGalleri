@@ -1,4 +1,4 @@
-# Photographs, stories, and shared memories
+﻿# Photographs, stories, and shared memories
 
 Edit `src/content/museumContent.ts`. Vite updates the local page as you work. Rebuild and upload a new version to update a published site.
 
@@ -19,13 +19,13 @@ mother: {
 }
 ```
 
-The same portrait is displayed in three rooms. `commemorativeBirthday` means the birthday being commemorated, not her age when she died. The English copy also refers explicitly to her 50th birthday; update those sentences if the occasion changes.
+The entrance and remembrance galleries use the main portrait. The nature gallery uses images/nature/NaturePortrait.jpeg as its central portrait. `commemorativeBirthday` means the birthday being commemorated, not her age when she died. The English copy also refers explicitly to her 50th birthday; update those sentences if the occasion changes.
 
 ## A photograph
 
-The uploaded JPEGs are now connected: two files under `mother`, five under `family`, fifteen under `nature`, and `theOneness/harmandirSahib.jpeg`. Originals are preserved without cropping or re-encoding. The main portrait uses `images/mother/portrait.jpeg`. Descriptions avoid invented dates or events.
+The uploaded JPEGs are now connected: three files under `mother`, five under `family`, fifteen under `nature`, and `theOneness/harmandirSahib.jpeg`. Originals are preserved without cropping or re-encoding. The main portrait uses `images/mother/portrait.jpeg`. The new `IMG_7791.jpeg` fills the third picture bay in the remembrance gallery. Removed images are no longer exhibited. Descriptions avoid invented dates or events.
 
-The nature collection is configured in `src/content/natureCollection.ts`. It includes every current file in `public/images/nature`, including the retained `sunlight.svg` illustration. Titles, descriptions and original pixel dimensions are listed there. Frame sizes follow each image's aspect ratio; the original file opens in the viewer. To add another work, add its entry and a free wall position in `src/world/galleryLayout.ts`. The test suite checks folder coverage and prevents overlapping frames.
+The nature collection is configured in `src/content/natureCollection.ts`. It includes every current file in `public/images/nature`, with `NaturePortrait.jpeg` configured separately as the central portrait in `src/content/museumContent.ts`. Titles, descriptions and original pixel dimensions are listed there. Frame sizes follow each image's aspect ratio; the original file opens in the viewer. To add another work, add its entry and a free wall position in `src/world/galleryLayout.ts`. The test suite checks folder coverage and prevents overlapping frames.
 
 Edit the existing `makePhoto(...)` examples, or replace them with entries in the `photographs` array:
 
@@ -57,16 +57,16 @@ Descriptions are plain text; HTML is not executed. `year`, `video`, `featured`, 
 
 All measurements are in metres. Eye height is 1.7 m. `position` is `[x, height, z]`, and `rotation` is the angle around the vertical axis in radians. Replacing existing photographs is the easiest way to keep correct placement.
 
-| `room`        | Visitor-facing name     | Bounds               |
-| ------------- | ----------------------- | -------------------- |
-| `entrance`    | A Place to Remember     | x −10…10, z 12…28    |
-| `atrium`      | The Seahorse Hall       | x −10…10, z −12…12   |
+| `room`        | Visitor-facing name    | Bounds               |
+| ------------- | ---------------------- | -------------------- |
+| `entrance`    | A Place to Remember    | x −10…10, z 12…28    |
+| `atrium`      | The Seahorse Hall      | x −10…10, z −12…12   |
 | `childhood`   | Remembering Puja Anand | x −30…−10, z −12…12  |
-| `family`      | The Life We Shared      | x 10…30, z −12…12    |
-| `sanctuary`   | THE ONENESS             | x −30…−10, z −30…−12 |
-| `celebration` | Forever Remembered      | x −10…30, z −48…−12  |
+| `family`      | The Life We Shared     | x 10…30, z −12…12    |
+| `sanctuary`   | THE ONENESS            | x −30…−10, z −30…−12 |
+| `celebration` | Forever Remembered     | x −10…30, z −48…−12  |
 
-The largest gallery is now 40 × 36 metres (1,440 m²), twice its previous area. It has a vaulted skylight rising to 12.2 metres, a warm oak floor, all sixteen nature works, and the memorial portrait. The sunflower is an original, fully walkable stone-and-brass floor inlay, implemented in `src/world/SunflowerFloor.tsx`. Its placement and the gallery bounds are shared through `MAIN_GALLERY` in `src/world/galleryLayout.ts`.
+The largest gallery is now 40 × 36 metres (1,440 m²), twice its previous area. It has a vaulted skylight rising to 12.2 metres, a warm oak floor, fourteen nature works, and the central nature portrait. The sunflower is an original, fully walkable stone-and-brass floor inlay, implemented in `src/world/SunflowerFloor.tsx`. Its placement and the gallery bounds are shared through `MAIN_GALLERY` in `src/world/galleryLayout.ts`.
 
 | Wall / direction faced by the photograph | `rotation`     |
 | ---------------------------------------- | -------------- |

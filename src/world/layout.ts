@@ -73,7 +73,7 @@ export const rooms: Room[] = [
     name: 'Forever Remembered',
     subtitle: 'The nature gallery · Honouring Puja Anand’s memory',
     description:
-      'Explore the nature collection beneath a vaulted skylight, with a sunflower inlaid in the gallery floor. On what would have been Puja Anand’s 50th birthday, we honour her life and remember the love she shared.',
+      'Explore the nature collection beneath a vaulted skylight, with a sunflower inlaid in the gallery floor. On what would have been Puja Anand’s 50th birthday, we honour her life and remember the love she shared.\n\navnit0203@gmail.com if intrested in the collection.',
     bounds: MAIN_GALLERY.bounds,
     spawn: MAIN_GALLERY.spawn,
     yaw: 0,

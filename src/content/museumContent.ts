@@ -16,8 +16,7 @@ export interface Photograph {
   placeholder?: boolean;
 }
 
-// All paths are relative to public/. One portrait is reused in three rooms.
-// Replace the placeholder paths, then set placeholder: false on your photographs.
+// All paths are relative to public/. The nature gallery has its own central portrait.
 export const museumContent = {
   mother: {
     name: 'Puja Anand',
@@ -91,6 +90,17 @@ export const photographs: Photograph[] = [
     'A photograph of Puja Anand, remembered with love.',
   ),
   makePhoto(
+    'childhood-2',
+    'childhood',
+    'Among Autumn Leaves',
+    'images/mother/IMG_7791.jpeg',
+    [-29.72, 3.3, 7],
+    Math.PI / 2,
+    720,
+    960,
+    'Puja Anand among autumn leaves. A moment remembered with love.',
+  ),
+  makePhoto(
     'family-1',
     'family',
     'Together',
@@ -158,7 +168,20 @@ export const photographs: Photograph[] = [
     1600,
     'Puja Anand at Harmandir Sahib.',
   ),
-  portrait('remembrance-portrait', 'celebration', MAIN_GALLERY.portrait, 0),
+  {
+    ...makePhoto(
+      'remembrance-portrait',
+      'celebration',
+      museumContent.mother.name,
+      'images/nature/NaturePortrait.jpeg',
+      MAIN_GALLERY.portrait,
+      0,
+      1199,
+      1482,
+      museumContent.mother.ending,
+    ),
+    featured: true,
+  },
   ...naturePhotographs,
 ];
 export function assetUrl(path: string) {

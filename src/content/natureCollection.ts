@@ -19,13 +19,6 @@ const works = [
   ],
   ['image00013.jpeg', 'Winter Sun', 960, 720, 'The winter sun above a snow-covered landscape.'],
   [
-    'image00014.jpeg',
-    'A Bridge in Monochrome',
-    960,
-    720,
-    'A bridge and its reflections, photographed in black and white.',
-  ],
-  [
     'image00015.jpeg',
     'A Bridge at Blue Hour',
     960,
@@ -102,13 +95,6 @@ const works = [
     1458,
     'A shared photograph of a water droplet, preserved with its original caption.',
   ],
-  [
-    'sunlight.svg',
-    'Sunlit Landscape',
-    1200,
-    900,
-    'The original nature illustration, retained from the museum’s first collection.',
-  ],
 ] as const;
 
 export const naturePhotographs: Photograph[] = works.map(([file, title, w, h, description], i) => {
@@ -119,7 +105,7 @@ export const naturePhotographs: Photograph[] = works.map(([file, title, w, h, de
     title,
     description,
     room: 'celebration',
-    placeholder: file.endsWith('.svg'),
+    placeholder: false,
     placement: { ...natureSlots[i], width: w * fit, height: h * fit },
   };
 });
