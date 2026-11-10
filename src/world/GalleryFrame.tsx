@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { useFrame, type ThreeEvent } from '@react-three/fiber';
-import { CanvasTexture, Mesh, Object3D, Path, Shape, SRGBColorSpace, Vector3 } from 'three';
-import { assetUrl, type Photograph } from '../content/museumContent';
-import { textTexture } from './materials';
+import { useEffect, useMemo, useState } from 'react';
+import { type ThreeEvent } from '@react-three/fiber';
+import { CanvasTexture, Path, Shape, type Texture } from 'three';
+import { type Photograph } from '../content/museumContent';
 import { Sign } from './Architecture';
 
 /** A continuous, mitred frame; the small bevel catches the gallery light. */
@@ -39,72 +38,20 @@ export function GalleryFrame({
   photo,
   onSelect,
   active,
+  texture,
 }: {
   photo: Photograph;
   onSelect: (p: Photograph) => void;
   active: boolean;
+  texture: Texture;
 }) {
   const { position, rotation, width, height } = photo.placement;
-  const [near, setNear] = useState(false),
-    [hovered, setHovered] = useState(false),
-    [lit, setLit] = useState(false);
-  const fallback = useMemo(
-    () => textTexture('A place for a memory', '#7b705b', '#e4ddcb', true),
-    [],
-  );
-  const [texture, setTexture] = useState(fallback);
-  const worldPosition = useMemo(() => new Vector3(...position), [position]);
-  const imageMesh = useRef<Mesh>(null!);
-  const lightTarget = useMemo(() => new Object3D(), []);
+  const [hovered, setHovered] = useState(false);
   const frame = useMemo(() => frameProfile(width + 0.52, height + 0.52, 0.115), [width, height]);
   const bead = useMemo(() => frameProfile(width + 0.3, height + 0.3, 0.018), [width, height]);
   const shadow = useMemo(frameShadow, []);
   const plaqueWidth = Math.min(width, 2.1);
   const plaqueX = (plaqueWidth - width) / 2;
-  useFrame(({ camera }) => {
-    const distance = camera.position.distanceTo(worldPosition);
-    // The enlarged hall has long sightlines: load its visible perimeter works on entry.
-    if (!near && distance < (photo.room === 'celebration' ? 60 : 31)) setNear(true);
-    if (lit && distance > 19) setLit(false);
-    else if (!lit && distance < 17) setLit(true);
-  });
-  useEffect(() => {
-    if (!near) return;
-    let cancelled = false,
-      loaded: CanvasTexture | undefined;
-    const image = new Image();
-    image.crossOrigin = 'anonymous';
-    image.onload = () => {
-      if (cancelled) return;
-      const canvas = document.createElement('canvas');
-      canvas.width = Math.round(1024 * Math.min(1, width / height));
-      canvas.height = Math.round(1024 * Math.min(1, height / width));
-      const ctx = canvas.getContext('2d')!;
-      ctx.fillStyle = '#eee9df';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      const fit = Math.min(canvas.width / image.width, canvas.height / image.height),
-        w = image.width * fit,
-        h = image.height * fit;
-      try {
-        ctx.drawImage(image, (canvas.width - w) / 2, (canvas.height - h) / 2, w, h);
-        loaded = new CanvasTexture(canvas);
-        loaded.colorSpace = SRGBColorSpace;
-        loaded.anisotropy = 4;
-        setTexture(loaded);
-      } catch {
-        setTexture(fallback);
-      }
-    };
-    image.onerror = () => {
-      if (!cancelled) setTexture(fallback);
-    };
-    image.src = assetUrl(photo.image);
-    return () => {
-      cancelled = true;
-      loaded?.dispose();
-    };
-  }, [near, photo.image, width, height, fallback]);
-  useEffect(() => () => fallback.dispose(), [fallback]);
   useEffect(() => () => shadow.dispose(), [shadow]);
   useEffect(() => {
     if (!active) setHovered(false);
@@ -170,7 +117,7 @@ export function GalleryFrame({
         <meshStandardMaterial color="#817b6b" roughness={0.92} />
       </mesh>
       <mesh
-        ref={imageMesh}
+        layers-enable={1}
         position={[0, 0, 0.075]}
         userData={{ photoId: photo.id }}
         onClick={select}
@@ -219,18 +166,6 @@ export function GalleryFrame({
           <meshBasicMaterial color="#fff0ce" toneMapped={false} />
         </mesh>
       </group>
-      <primitive object={lightTarget} />
-      {lit && (
-        <spotLight
-          position={[0, height / 2 + 0.48, 0.7]}
-          target={lightTarget}
-          color="#fff1dc"
-          intensity={13}
-          distance={7}
-          angle={0.86}
-          penumbra={0.9}
-        />
-      )}
     </group>
   );
 }

@@ -73,6 +73,8 @@ npm run test:browser
 
 The checks cover desktop movement, room navigation, photographs, the guided tour, touch controls, missing images, and the WebGL fallback. Results and screenshots are saved in the Git-ignored `artifacts/` folder. Pass a different server address as an argument, or set `MUSEUM_URL`, to test a production preview. Mobile checks emulate touch in Chrome; also review the experience on the family's actual devices before sharing.
 
+With the production preview running on port 4173, run `npm run test:performance`. This checks that artwork is prepared before entry, room changes do not request more images or compile more shaders, artwork targeting skips forest instances, and other galleries do not trigger reflection or environment captures. Pass another preview URL as an argument if needed. Timing results in `artifacts/performance-results.json` are diagnostic, not a hardware performance guarantee.
+
 ## Deployment
 
 See [the deployment guide](docs/DEPLOYMENT.md) for Cloudflare Pages, Netlify, and Vercel, including removing the site afterwards. Publishing is a separate step; editing this local project does not publish it or push it to GitHub.
@@ -95,6 +97,6 @@ public/videos/                Optional videos of shared memories
 tests/                        Navigation and content checks
 ```
 
-Vegetation reuses geometry through instancing. Photographs load as visitors approach, with GPU textures limited to 1024 pixels; the photograph viewer loads the original file. One main light casts shadows, disabled automatically on touch devices. Device pixel ratio is limited to 1–1.5. No heavy post-processing or external 3D models are needed.
+Vegetation reuses geometry through instancing. Before entry, artwork is loaded with bounded concurrency, resized to at most 1024 pixels, and uploaded to the GPU; shaders and room views are also prepared. The photograph viewer loads the original file. Static shadows and environment lighting are cached, and four reusable picture lights keep the shader light count stable. The pool updates its reflection only when visible, nearby, and the viewpoint changes, at most 20 times per second. Artwork targeting tests photographs and walls instead of the forest. Automatic desktop resolution can adapt between 0.7 and 1.5 device pixels per CSS pixel; the touch-device default disables shadows and planar reflections.
 
 See [asset credits](docs/ASSETS.md) for origins, font licences, and replacing the sculpture.

@@ -1,5 +1,5 @@
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
-import { MeshReflectorMaterial } from '@react-three/drei';
+import { PoolReflection } from './PoolReflection';
 import {
   BoxGeometry,
   ExtrudeGeometry,
@@ -351,26 +351,14 @@ function Pool({
         <ringGeometry args={[3.93, 4.1, 128]} />
         <meshStandardMaterial map={stone} color="#c2beb1" roughness={0.38} />
       </mesh>
-      <mesh position={[0, 0.19, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[3.94, 128]} />
-        {low ? (
+      {low ? (
+        <mesh position={[0, 0.222, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+          <circleGeometry args={[3.94, 128]} />
           <meshStandardMaterial color="#243b33" metalness={0.65} roughness={0.2} />
-        ) : (
-          <MeshReflectorMaterial
-            resolution={256}
-            blur={[80, 30]}
-            mixBlur={0.65}
-            mixStrength={1.7}
-            mirror={0.65}
-            color="#71867c"
-            metalness={0.25}
-            roughness={0.18}
-            depthScale={0}
-            minDepthThreshold={0.8}
-            maxDepthThreshold={1}
-          />
-        )}
-      </mesh>
+        </mesh>
+      ) : (
+        <PoolReflection />
+      )}
       <mesh position={[0, 0.35, 0]} receiveShadow castShadow material={finishes.dark}>
         <cylinderGeometry args={[1.76, 1.76, 0.3, 96]} />
       </mesh>
@@ -620,7 +608,7 @@ export function Architecture({ low }: { low: boolean }) {
       <MainGallery />
       {walls.map((wall, i) => (
         <group key={i}>
-          <mesh position={wall.position} receiveShadow castShadow={!wall.glass}>
+          <mesh position={wall.position} layers-enable={1} receiveShadow castShadow={!wall.glass}>
             <boxGeometry args={wall.size} />
             {wall.glass ? (
               <meshPhysicalMaterial

@@ -42,7 +42,13 @@ export function VisitorControls({
   const lastRoom = useRef<RoomId>('entrance'),
     timer = useRef(0),
     target = useRef<Photograph | undefined>(undefined);
-  const ray = useMemo(() => new Raycaster(), []),
+  const lastPosition = useRef(new Vector2(Infinity, Infinity));
+  const ray = useMemo(() => {
+      const raycaster = new Raycaster();
+      // Only artwork and architectural blockers; never raycast forest instances.
+      raycaster.layers.set(1);
+      return raycaster;
+    }, []),
     euler = useMemo(() => new Euler(0, 0, 0, 'YXZ'), []);
   useEffect(() => {
     if (!entered) return;
@@ -208,7 +214,10 @@ export function VisitorControls({
         lastRoom.current = room;
         onRoom(room);
       }
-      onPosition([nx, nz]);
+      if (Math.hypot(nx - lastPosition.current.x, nz - lastPosition.current.y) > 0.02) {
+        lastPosition.current.set(nx, nz);
+        onPosition([nx, nz]);
+      }
       ray.setFromCamera(new Vector2(0, 0), camera);
       ray.far = 9;
       const hits = ray.intersectObjects(scene.children, true).filter((hit) => {
