@@ -397,7 +397,7 @@ function Pool({
       {/* Small plaque set into the pool rim, inside its existing collision boundary. */}
       <Block position={[0, 0.45, 3.91]} size={[1.45, 0.4, 0.07]} material={finishes.dark} rounded />
       <Sign
-        text={'THE SEAHORSE\nA sculpture in light and bronze'}
+        text={'THE SEAHORSE\nA symbol of love, good luck, patience and protection.'}
         position={[0, 0.45, 3.95]}
         width={1.38}
         height={0.36}

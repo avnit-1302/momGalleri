@@ -87,7 +87,7 @@ export const photographs: Photograph[] = [
     Math.PI / 2,
     1406,
     2015,
-    'A photograph of Puja Anand, remembered with love.',
+    'Her smile and laughter are cherished memories.',
   ),
   makePhoto(
     'childhood-2',
@@ -98,7 +98,7 @@ export const photographs: Photograph[] = [
     Math.PI / 2,
     720,
     960,
-    'Puja Anand among autumn leaves. A moment remembered with love.',
+    'Puja Anand among autumn leaves. Her love for autumn and the outdoors is remembered with warmth.',
   ),
   makePhoto(
     'family-1',
@@ -120,7 +120,7 @@ export const photographs: Photograph[] = [
     -Math.PI / 2,
     680,
     1011,
-    'A shared moment with Puja Anand.',
+    'Graduation day of her son, Avnit Anand. A moment of pride and joy.',
   ),
   makePhoto(
     'family-3',
@@ -131,7 +131,7 @@ export const photographs: Photograph[] = [
     -Math.PI / 2,
     1600,
     1066,
-    'A moment together in the snow.',
+    'Kabir and Puja having a day out together. Enjoying snow and the simple moments of life. No one loved Kabirs energy and enthusiasm more than his mother.',
   ),
   makePhoto(
     'family-4',
@@ -142,7 +142,7 @@ export const photographs: Photograph[] = [
     0,
     768,
     1024,
-    'Family, closeness and a moment to remember.',
+    'Her siblings - Charu, Paras and Chandni',
   ),
   makePhoto(
     'family-5',
@@ -153,7 +153,7 @@ export const photographs: Photograph[] = [
     0,
     750,
     1334,
-    'A treasured family photograph of Puja Anand with her loved ones.',
+    'Photo with both her children, Avnit and Kabir.',
   ),
   // Available in the collection; the main tribute wall remains the unframed Ik Onkar.
   portrait('tribute-portrait', 'sanctuary', [-20, 3.55, -29.63], 0),
@@ -166,7 +166,7 @@ export const photographs: Photograph[] = [
     Math.PI / 2,
     1088,
     1600,
-    'Puja Anand at Harmandir Sahib.',
+    'Puja Anand at Harmandir Sahib. Sewa were a part of her life. Either if it was helping others inside or outside the Gurudwara. "I learned this from my mother, and will continue her teachings" -Avnit Anand"',
   ),
   {
     ...makePhoto(
