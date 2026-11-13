@@ -166,7 +166,7 @@ export const photographs: Photograph[] = [
     Math.PI / 2,
     1088,
     1600,
-    'Puja Anand at Harmandir Sahib. Sewa were a part of her life. Either if it was helping others inside or outside the Gurudwara. "I learned this from my mother, and will continue her teachings" -Avnit Anand"',
+    'Puja Anand at Harmandir Sahib. Sewa were a part of her life. Either if it was helping others inside or outside the Gurudwara. "I learned this from my mother, and will continue her teachings" -Avnit Anand',
   ),
   {
     ...makePhoto(
