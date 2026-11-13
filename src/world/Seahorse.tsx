@@ -1,5 +1,4 @@
-
-import { useEffect, useMemo } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import { useThree } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 import {
@@ -39,20 +38,6 @@ export function Seahorse({
   const { scene } = useGLTF('/models/seahorse.glb');
   const { gl } = useThree();
 
-  // Local reflection environment for silver metal.
-  // No external HDR assets or paid APIs required.
-  const reflections = useMemo(() => {
-    const generator = new PMREMGenerator(gl);
-    const room = new RoomEnvironment();
-
-    const target = generator.fromScene(room);
-
-    room.dispose();
-    generator.dispose();
-
-    return target;
-  }, [gl]);
-
   const prepared = useMemo(() => {
     // Clone the original GLB model.
     const model = scene.clone(true);
@@ -67,26 +52,17 @@ export function Seahorse({
 
     // Center model horizontally.
     // Place its bottom at the pedestal level.
-    const offset: [number, number, number] = [
-      -center.x,
-      -bounds.min.y,
-      -center.z,
-    ];
+    const offset: [number, number, number] = [-center.x, -bounds.min.y, -center.z];
 
     const materials: MeshPhysicalMaterial[] = [];
 
     model.traverse((child) => {
       if (!(child instanceof Mesh)) return;
 
-      const original = Array.isArray(child.material)
-        ? child.material[0]
-        : child.material;
+      const original = Array.isArray(child.material) ? child.material[0] : child.material;
 
       // Preserve existing normal-map details if available.
-      const normalMap =
-        original instanceof MeshStandardMaterial
-          ? original.normalMap
-          : null;
+      const normalMap = original instanceof MeshStandardMaterial ? original.normalMap : null;
 
       // Premium polished silver material.
       const silver = new MeshPhysicalMaterial({
@@ -95,7 +71,6 @@ export function Seahorse({
         roughness: 0.2,
         clearcoat: 0.22,
         clearcoatRoughness: 0.16,
-        envMap: reflections.texture,
         envMapIntensity: 1.45,
         normalMap,
         side: DoubleSide,
@@ -114,34 +89,39 @@ export function Seahorse({
       offset,
       materials,
     };
-  }, [scene, height, reflections]);
+  }, [scene, height]);
 
-  // Clean up materials when the component is removed.
-  useEffect(() => {
+  // Create GPU resources only after commit, before the sculpture's first frame.
+  // Strict Mode and Suspense can clean up and restart effects: each setup must
+  // generate a fresh reflection target instead of reusing a disposed texture.
+  useLayoutEffect(() => {
+    const generator = new PMREMGenerator(gl);
+    const room = new RoomEnvironment();
+    let reflections;
+    try {
+      reflections = generator.fromScene(room);
+    } finally {
+      room.dispose();
+      generator.dispose();
+    }
+    prepared.materials.forEach((material) => {
+      material.envMap = reflections.texture;
+      material.needsUpdate = true;
+    });
+
     return () => {
       prepared.materials.forEach((material) => {
+        material.envMap = null;
         material.dispose();
       });
-    };
-  }, [prepared]);
-
-  // Clean up reflection environment.
-  useEffect(() => {
-    return () => {
       reflections.dispose();
     };
-  }, [reflections]);
+  }, [gl, prepared]);
 
   return (
-    <group
-      position={position}
-      rotation={[0, rotationY, 0]}
-    >
+    <group position={position} rotation={[0, rotationY, 0]}>
       <group scale={prepared.scale}>
-        <primitive
-          object={prepared.model}
-          position={prepared.offset}
-        />
+        <primitive object={prepared.model} position={prepared.offset} />
       </group>
     </group>
   );
