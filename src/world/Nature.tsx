@@ -1,15 +1,6 @@
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
-import {
-  Color,
-  DoubleSide,
-  IcosahedronGeometry,
-  InstancedMesh,
-  LatheGeometry,
-  Matrix4,
-  Vector2,
-} from 'three';
+import { Color, DoubleSide, IcosahedronGeometry, InstancedMesh, Matrix4 } from 'three';
 import type { BufferGeometry } from 'three';
-import type { Vec3 } from '../content/museumContent';
 import {
   barkTexture,
   fernGeometry,
@@ -261,63 +252,6 @@ export function Forest({ low }: { low: boolean }) {
           roughness={0.95}
         />
       </Instances>
-    </group>
-  );
-}
-
-export function Planter({ position }: { position: Vec3 }) {
-  const assets = useMemo(
-    () => ({
-      ...treeGeometry('birch', true),
-      leaves: leafTexture('birch'),
-      pot: new LatheGeometry(
-        [
-          new Vector2(0.51, 0),
-          new Vector2(0.55, 0.05),
-          new Vector2(0.59, 0.16),
-          new Vector2(0.69, 0.87),
-          new Vector2(0.69, 0.95),
-          new Vector2(0.63, 0.97),
-          new Vector2(0.61, 0.87),
-          new Vector2(0.51, 0.12),
-        ],
-        40,
-      ),
-    }),
-    [],
-  );
-  useEffect(() => () => Object.values(assets).forEach((asset) => asset.dispose()), [assets]);
-  return (
-    <group position={position}>
-      <mesh geometry={assets.pot} castShadow receiveShadow>
-        <meshStandardMaterial color="#a7a28f" roughness={0.75} />
-      </mesh>
-      <mesh position={[0, 0.925, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <circleGeometry args={[0.61, 32]} />
-        <meshStandardMaterial color="#393b2c" roughness={1} />
-      </mesh>
-      <mesh position={[0, 0.93, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-        <torusGeometry args={[0.68, 0.012, 6, 40]} />
-        <meshStandardMaterial color="#91815d" roughness={0.32} metalness={0.7} />
-      </mesh>
-      <group
-        position={[0, 0.89, 0]}
-        scale={[0.18, 0.18, 0.18]}
-        rotation={[0, position[0] * 0.3, 0]}
-      >
-        <mesh geometry={assets.wood} castShadow receiveShadow>
-          <meshStandardMaterial color="#6f6851" roughness={0.92} />
-        </mesh>
-        <mesh geometry={assets.foliage} castShadow receiveShadow>
-          <meshStandardMaterial
-            map={assets.leaves}
-            color="#b7bda2"
-            alphaTest={0.48}
-            side={DoubleSide}
-            roughness={0.84}
-          />
-        </mesh>
-      </group>
     </group>
   );
 }

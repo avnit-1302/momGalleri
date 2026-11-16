@@ -1,5 +1,6 @@
 import { rooms } from '../world/layout';
 import type { RoomId } from '../content/museumContent';
+import { galleryPartitions, galleryPiers } from '../world/galleryLayout';
 export function MuseumMap({
   current,
   position,
@@ -54,6 +55,17 @@ export function MuseumMap({
           );
         })}
         <circle cx="0" cy="0" r="3.9" className="map-pool" />
+        <g fill="#898575" opacity={0.7} pointerEvents="none" aria-hidden="true">
+          {[...galleryPartitions, ...galleryPiers].map((wall, i) => (
+            <rect
+              key={i}
+              x={wall.position[0] - wall.size[0] / 2}
+              y={wall.position[2] - wall.size[2] / 2}
+              width={wall.size[0]}
+              height={wall.size[2]}
+            />
+          ))}
+        </g>
         <circle cx={position[0]} cy={position[1]} r=".8" className="map-visitor" />
       </svg>
       <div className="map-key">

@@ -1,5 +1,5 @@
 import { museumContent, type RoomId, type Vec3 } from '../content/museumContent';
-import { MAIN_GALLERY } from './galleryLayout';
+import { MAIN_GALLERY, galleryPartitions, galleryPiers } from './galleryLayout';
 
 export interface Room {
   id: RoomId;
@@ -87,7 +87,7 @@ export interface Wall {
 export type Collider =
   | { kind: 'box'; x: number; z: number; halfX: number; halfZ: number }
   | { kind: 'circle'; x: number; z: number; radius: number };
-export const walls: Wall[] = [];
+export const walls: Wall[] = [...galleryPartitions, ...galleryPiers];
 function wall(x: number, z: number, width: number, depth: number, glass = false, height = 8) {
   walls.push({ position: [x, height / 2, z], size: [width, height, depth], glass });
 }

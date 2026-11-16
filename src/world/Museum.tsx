@@ -6,6 +6,7 @@ import type { Photograph } from '../content/museumContent';
 import { exhibitedPhotographs, prepareArtwork } from './artworkTextures';
 import { GalleryLights } from './GalleryLights';
 import { PrepareScene } from './PrepareScene';
+import { Visitors } from './Visitors';
 import { Architecture } from './Architecture';
 import { Forest } from './Nature';
 import { GalleryFrame } from './GalleryFrame';
@@ -172,6 +173,7 @@ export default function Museum({ quality, onReady, onFailure, ...visitor }: Prop
           />
         ))}
       <VisitorControls {...visitor} />
+      <Visitors low={low} active={visitor.entered && visitor.active} />
       <AdaptiveResolution enabled={quality === 'auto' && !low && visitor.entered} />
       {textures && <PrepareScene low={low} onReady={onReady} onFailure={onFailure} />}
     </Canvas>

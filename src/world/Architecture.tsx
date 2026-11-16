@@ -18,7 +18,7 @@ import { RoundedBoxGeometry } from 'three/addons/geometries/RoundedBoxGeometry.j
 import { museumContent, type Vec3 } from '../content/museumContent';
 import { benches, planters, rooms, walls } from './layout';
 import { contactTexture, oakTexture, stoneTexture, textTexture } from './materials';
-import { Planter } from './Nature';
+import { IndoorPlants } from './IndoorPlants';
 import { Seahorse } from './Seahorse';
 import { MAIN_GALLERY } from './galleryLayout';
 import { MainGallery } from './MainGallery';
@@ -728,11 +728,11 @@ export function Architecture({ low }: { low: boolean }) {
             material={finishes.dark}
             rounded
           />
-          {Array.from({ length: 6 }, (_, j) => (
+          {Array.from({ length: 3 }, (_, j) => (
             <Block
               key={j}
-              position={[0, 0.025, -0.435 + j * 0.174]}
-              size={[3.55, 0.13, 0.15]}
+              position={[0, 0.025, -0.292 + j * 0.292]}
+              size={[3.55, 0.13, 0.282]}
               material={finishes.wood}
               rounded
             />
@@ -751,10 +751,10 @@ export function Architecture({ low }: { low: boolean }) {
       {planters.map((p, i) => (
         <group key={i}>
           <Contact position={[p[0], -0.02, p[2]]} size={[2.7, 2.7]} texture={contact} />
-          <Planter position={p} />
         </group>
       ))}
       {/* An unframed Ik Onkar replaces the portrait within the existing tribute arch. */}
+      <IndoorPlants />
       <Arch
         x={-20}
         z={-29.62}
@@ -798,7 +798,7 @@ export function Architecture({ low }: { low: boolean }) {
       />
       <Sign
         text="THE MEMORIES WE HOLD FOREVER"
-        position={[10, 5.65, MAIN_GALLERY.bounds[2] + 0.3]}
+        position={[10, 5.8, MAIN_GALLERY.bounds[2] + 0.3]}
         width={7.3}
         height={0.5}
       />

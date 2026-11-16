@@ -8,6 +8,7 @@
 - The original SVG placeholders have been removed from the exhibition. `scripts/create-placeholders.mjs` remains as a development utility; it should not be rerun against the current photo collection because it recreates the old example files.
 - The sunflower floor inlay is original procedural geometry in `src/world/SunflowerFloor.tsx`: layered stone petals, brass edging and instanced spiral seeds. No downloaded artwork or external asset service is used. The vaulted gallery and oak-plank texture in `src/world/MainGallery.tsx` are also original project assets.
 - Family photographs and videos you add retain their own authorship and rights.
+- The broad-leaf ficus plants in `IndoorPlants.tsx`, their vein texture, the architecture in `GalleryDetails.tsx`, and the clothed visitor figures in `Visitors.tsx` are original code-generated assets. They require no external model downloads or runtime services.
 
 ## Fonts and libraries
 

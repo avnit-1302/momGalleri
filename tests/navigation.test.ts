@@ -4,6 +4,26 @@ import { canStand, moveWithCollisions, roomAt, rooms } from '../src/world/layout
 import { photographs } from '../src/content/museumContent';
 import { existsSync, readdirSync } from 'node:fs';
 import { MAIN_GALLERY } from '../src/world/galleryLayout';
+import { galleryPartitions, galleryPiers } from '../src/world/galleryLayout';
+import { visitorRoutes } from '../src/world/visitorRoutes';
+
+test('New display walls and piers block walking while every visitor route stays clear', () => {
+  for (const solid of [...galleryPartitions, ...galleryPiers])
+    assert.equal(canStand(solid.position[0], solid.position[2]), false);
+  for (const [index, route] of visitorRoutes.entries())
+    for (let i = 0; i < route.length; i++) {
+      const a = route[i],
+        b = route[(i + 1) % route.length];
+      const steps = Math.ceil(Math.hypot(b.x - a.x, b.z - a.z) / 0.1);
+      for (let n = 0; n <= steps; n++) {
+        const t = n / steps;
+        assert.ok(
+          canStand(a.x + (b.x - a.x) * t, a.z + (b.z - a.z) * t),
+          `Visitor ${index}, segment ${i}`,
+        );
+      }
+    }
+});
 
 test('Every room has a safe spawn and is correctly identified', () => {
   for (const room of rooms) {

@@ -56,6 +56,11 @@ try {
   await page.getByRole('button', { name: /^Explore the museum/ }).click();
   await page.screenshot({ path: 'artifacts/map.png' });
   await page.getByRole('button', { name: 'Go to The Life We Shared', exact: true }).click();
+  // R3F commits the camera destination and re-enables frame events after the map closes.
+  await page.getByRole('heading', { name: 'The Life We Shared', exact: true }).waitFor();
+  await page.evaluate(
+    () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
+  );
   const camera = new PerspectiveCamera(65, 1440 / 960, 0.1, 190);
   camera.position.set(19, 1.7, 4);
   camera.rotation.set(0, -Math.PI / 2, 0, 'YXZ');

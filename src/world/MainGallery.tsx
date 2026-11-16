@@ -17,6 +17,7 @@ import {
 import { mergeGeometries } from 'three/addons/utils/BufferGeometryUtils.js';
 import { MAIN_GALLERY } from './galleryLayout';
 import { SunflowerFloor } from './SunflowerFloor';
+import { GalleryDetails } from './GalleryDetails';
 
 function floorTexture() {
   const canvas = document.createElement('canvas');
@@ -29,7 +30,7 @@ function floorTexture() {
     for (let row = -1; row < 5; row++) {
       const x = column * 64,
         y = row * 256 + (column % 3) * 85;
-      ctx.fillStyle = `hsl(33, 31%, ${50 + random() * 9}%)`;
+      ctx.fillStyle = `hsl(32, 25%, ${46 + random() * 7}%)`;
       ctx.fillRect(x, y, 64, 256);
       for (let grain = 0; grain < 85; grain++) {
         const gx = x + random() * 64;
@@ -64,7 +65,7 @@ export function MainGallery() {
   const assets = useMemo(() => {
     const floor = new PlaneGeometry(x2 - x1, depth);
     const uv = floor.getAttribute('uv');
-    for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * 14, uv.getY(i) * 5);
+    for (let i = 0; i < uv.count; i++) uv.setXY(i, uv.getX(i) * 24, uv.getY(i) * 5);
     const points = Array.from({ length: 49 }, (_, i) => {
       const a = (i / 48) * Math.PI;
       return new Vector3(cx + Math.cos(a) * radius, spring + Math.sin(a) * rise, 0);
@@ -111,7 +112,7 @@ export function MainGallery() {
         color: '#e9e4d9',
         roughness: 0.78,
         emissive: '#c5b9a3',
-        emissiveIntensity: 0.25,
+        emissiveIntensity: 0.12,
         side: DoubleSide,
       }),
     [],
@@ -135,11 +136,12 @@ export function MainGallery() {
           map={assets.texture}
           bumpMap={assets.texture}
           bumpScale={0.012}
-          roughness={0.42}
+          roughness={0.56}
           envMapIntensity={0.45}
         />
       </mesh>
       <SunflowerFloor />
+      <GalleryDetails />
       {[-1, 1].map((side) => (
         <group key={side}>
           <mesh
