@@ -1,59 +1,56 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { NatureAudio, type SoundPose } from './NatureAudio';
+
 export function useAmbience() {
-  const context = useRef<AudioContext | null>(null),
-    [enabled, setEnabled] = useState(false);
+  const engine = useRef<NatureAudio | null>(null),
+    wanted = useRef(false),
+    version = useRef(0);
+  const [enabled, setEnabled] = useState(false),
+    [loading, setLoading] = useState(false);
+  const [error, setError] = useState(''),
+    [volume, setVolumeState] = useState(0.35);
+  const volumeRef = useRef(volume);
   const toggle = useCallback(async () => {
+    const request = ++version.current;
+    wanted.current = !wanted.current;
+    setEnabled(wanted.current);
+    setError('');
+    setLoading(wanted.current);
     try {
-      if (!context.current) {
-        const audio = new AudioContext();
-        context.current = audio;
-        const buffer = audio.createBuffer(1, audio.sampleRate * 4, audio.sampleRate),
-          data = buffer.getChannelData(0);
-        let previous = 0;
-        for (let i = 0; i < data.length; i++) {
-          previous = (previous + (Math.random() * 2 - 1) * 0.025) / 1.025;
-          data[i] = previous * 3;
-        }
-        const source = audio.createBufferSource();
-        source.buffer = buffer;
-        source.loop = true;
-        const filter = audio.createBiquadFilter();
-        filter.type = 'lowpass';
-        filter.frequency.value = 900;
-        const gain = audio.createGain();
-        gain.gain.value = 0.2;
-        source.connect(filter);
-        filter.connect(gain);
-        gain.connect(audio.destination);
-        source.start();
-      }
-      if (enabled) {
-        await context.current.suspend();
-        setEnabled(false);
-      } else {
-        await context.current.resume();
-        setEnabled(true);
-      }
+      engine.current ??= new NatureAudio();
+      engine.current.setVolume(volumeRef.current);
+      await engine.current.enable(wanted.current);
     } catch {
-      setEnabled(false);
-    }
-  }, [enabled]);
-  useEffect(() => {
-    const change = () => {
-      if (context.current) {
-        if (document.hidden) void context.current.suspend();
-        else if (enabled) void context.current.resume();
+      if (version.current === request) {
+        wanted.current = false;
+        setEnabled(false);
+        setError('Museum audio could not load. Select sound to try again.');
+        engine.current?.dispose();
+        engine.current = null;
       }
-    };
-    document.addEventListener('visibilitychange', change);
-    return () => document.removeEventListener('visibilitychange', change);
-  }, [enabled]);
-  useEffect(
-    () => () => {
-      void context.current?.close();
-      context.current = null;
-    },
+    } finally {
+      if (version.current === request) setLoading(false);
+    }
+  }, []);
+  const setVolume = useCallback((value: number) => {
+    volumeRef.current = value;
+    setVolumeState(value);
+    engine.current?.setVolume(value);
+  }, []);
+  const updateListener = useCallback<SoundPose>(
+    (...pose) => engine.current?.updateListener(...pose),
     [],
   );
-  return { enabled, toggle };
+  useEffect(() => {
+    const change = () => engine.current?.visibility();
+    document.addEventListener('visibilitychange', change);
+    return () => {
+      document.removeEventListener('visibilitychange', change);
+      version.current++;
+      wanted.current = false;
+      engine.current?.dispose();
+      engine.current = null;
+    };
+  }, []);
+  return { enabled, loading, error, volume, setVolume, toggle, updateListener };
 }

@@ -1,0 +1,29 @@
+[
+  {
+    "name": "harper",
+    "bytes": 3064976,
+    "triangles": 30772,
+    "clips": [
+      "Idle_Standing",
+      "Walk_Relaxed"
+    ]
+  },
+  {
+    "name": "jordan",
+    "bytes": 3154224,
+    "triangles": 30375,
+    "clips": [
+      "Idle_Standing",
+      "Walk_Relaxed"
+    ]
+  },
+  {
+    "name": "maya",
+    "bytes": 2652668,
+    "triangles": 30548,
+    "clips": [
+      "Idle_Standing",
+      "Walk_Relaxed"
+    ]
+  }
+]

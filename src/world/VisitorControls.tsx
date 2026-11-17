@@ -3,6 +3,7 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { Euler, Raycaster, Vector2, Vector3 } from 'three';
 import { photographs, type Photograph, type RoomId } from '../content/museumContent';
 import { moveWithCollisions, roomAt, rooms } from './layout';
+import { avoidVisitors } from './visitorSpace';
 
 export interface VisitorInput {
   x: number;
@@ -197,12 +198,13 @@ export function VisitorControls({
     const { yaw, pitch } = angles.current,
       vx = velocity.current.x,
       vz = velocity.current.y;
-    const [nx, nz] = moveWithCollisions(
+    const [wallX, wallZ] = moveWithCollisions(
       camera.position.x,
       camera.position.z,
       (vx * Math.cos(yaw) + vz * Math.sin(yaw)) * dt,
       (-vx * Math.sin(yaw) + vz * Math.cos(yaw)) * dt,
     );
+    const [nx, nz] = avoidVisitors(camera.position.x, camera.position.z, wallX, wallZ);
     camera.position.set(nx, 1.7, nz);
     euler.set(pitch, yaw, 0);
     camera.quaternion.setFromEuler(euler);

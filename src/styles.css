@@ -591,6 +591,36 @@ button:disabled {
 .sound-setting > span {
   margin-left: auto;
 }
+.sound-volume {
+  margin-top: 18px;
+}
+.sound-volume input {
+  flex: 1;
+  min-width: 60px;
+  max-width: 180px;
+  accent-color: #77765b;
+}
+.sound-volume output {
+  min-width: 32px;
+  text-align: right;
+}
+.sound-description {
+  font-size: 11px;
+  color: var(--ink);
+  line-height: 1.6;
+  margin: 12px 0 0;
+}
+.sound-status {
+  position: absolute;
+  right: 24px;
+  top: 76px;
+  max-width: 260px;
+  padding: 8px 12px;
+  background: #f4f1e7;
+  color: #535a49;
+  font-size: 11px;
+  border-radius: 4px;
+}
 .instructions-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;

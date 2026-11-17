@@ -104,3 +104,25 @@ See [asset credits](docs/ASSETS.md) for origins, font licences, and replacing th
 The main gallery has two freestanding display walls, full-height piers, transverse beams, and recessed lighting details. Their solid footprints are shared by navigation and the map. `galleryLayout.ts` holds the placement of the architecture and nature artworks.
 
 Indoor ficus plants share leaf geometry, one 256-pixel texture, and four draw calls for the whole collection. Three visitors (two at low quality) follow validated routes, pause at artworks, and yield when the viewer is nearby. They use inexpensive contact shadows and do not update the static shadow map. Run `node scripts/gallery-check.mjs <preview-url>` to check their movement, inspect the relocated artworks, and save architectural screenshots.
+
+Visitors now use locally bundled, textured CC0 human GLBs with skeletal walking
+and idle animations. The walking clip is rebaked offline with shorter steps,
+lower foot clearance, a narrower stance and less body bounce. Planted feet match
+the 0.78 m/s reference gait; playback follows travel speed. Nearby visible
+visitors animate every frame, distant visitors at 20 Hz, and offscreen visitors
+at 2 Hz. Models and textures are prepared before entry. Animation actions are
+restarted during effect setup so React StrictMode and quality changes cannot
+leave a character stuck in its default pose.
+
+Museum audio is off on every fresh visit. Enabling it plays locally bundled CC0
+ambient piano (*Lifewave 2k*, The Cynic Project), quiet wind and positional water.
+Birdsong appears only in short 4–6 second passages separated by long quiet gaps;
+the additional leaf effect is disabled. Music streams through an HTML audio element
+to avoid decoding a three-minute PCM buffer. The menu volume controls the whole mix.
+Muting or hiding the tab pauses music, cancels bird timers and suspends Web Audio.
+A small native compressor catches coincident peaks. Sources and preparation details
+are recorded in `public/licenses/museum-visitors-and-nature.md`.
+
+Run `node scripts/visitors-audio-check.mjs <preview-url>` to verify actual arm/leg
+joint animation, idle movement, quality remounts, opt-in audio loading, positional
+water, volume and mute. It saves close-up character images in `artifacts/`.

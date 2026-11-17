@@ -7,13 +7,20 @@ import { exhibitedPhotographs, prepareArtwork } from './artworkTextures';
 import { GalleryLights } from './GalleryLights';
 import { PrepareScene } from './PrepareScene';
 import { Visitors } from './Visitors';
+import { SoundListener } from './SoundListener';
+import type { SoundPose } from '../ui/NatureAudio';
 import { Architecture } from './Architecture';
 import { Forest } from './Nature';
 import { GalleryFrame } from './GalleryFrame';
 import { VisitorControls, type VisitorProps } from './VisitorControls';
 
 export type Quality = 'auto' | 'low' | 'high';
-type Props = VisitorProps & { quality: Quality; onReady: () => void; onFailure: () => void };
+type Props = VisitorProps & {
+  quality: Quality;
+  onReady: () => void;
+  onFailure: () => void;
+  onSoundPose: SoundPose;
+};
 // Respond to sustained load after preparation; increase resolution more cautiously.
 function AdaptiveResolution({ enabled }: { enabled: boolean }) {
   const setDpr = useThree((state) => state.setDpr);
@@ -107,7 +114,7 @@ const StaticWorld = memo(function StaticWorld({ low }: { low: boolean }) {
 });
 const FramedArtwork = memo(GalleryFrame);
 
-export default function Museum({ quality, onReady, onFailure, ...visitor }: Props) {
+export default function Museum({ quality, onReady, onFailure, onSoundPose, ...visitor }: Props) {
   const low = quality === 'low' || (quality === 'auto' && matchMedia('(pointer: coarse)').matches);
   const selectArtwork = useCallback(
     (photo: Photograph) => {
@@ -174,6 +181,7 @@ export default function Museum({ quality, onReady, onFailure, ...visitor }: Prop
         ))}
       <VisitorControls {...visitor} />
       <Visitors low={low} active={visitor.entered && visitor.active} />
+      <SoundListener onPose={onSoundPose} />
       <AdaptiveResolution enabled={quality === 'auto' && !low && visitor.entered} />
       {textures && <PrepareScene low={low} onReady={onReady} onFailure={onFailure} />}
     </Canvas>

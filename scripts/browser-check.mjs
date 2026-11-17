@@ -71,12 +71,12 @@ try {
   await page.screenshot({ path: 'artifacts/photo.png' });
   await page.keyboard.press('Escape');
   assert.equal(await page.getByRole('dialog').count(), 0);
-  await page.getByRole('button', { name: 'Turn on nature sounds' }).click();
+  await page.getByRole('button', { name: 'Turn on museum audio' }).click();
   assert.equal(
-    await page.getByRole('button', { name: 'Turn off nature sounds' }).getAttribute('aria-pressed'),
+    await page.getByRole('button', { name: 'Turn off museum audio' }).getAttribute('aria-pressed'),
     'true',
   );
-  await page.getByRole('button', { name: 'Turn off nature sounds' }).click();
+  await page.getByRole('button', { name: 'Turn off museum audio' }).click();
   await page.getByRole('button', { name: 'Free mouse look' }).click();
   await page.waitForFunction(() => Boolean(document.pointerLockElement));
   await page.keyboard.press('Escape');

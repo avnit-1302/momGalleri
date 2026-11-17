@@ -191,6 +191,7 @@ export default function App() {
                 onLock={setLocked}
                 quality={quality}
                 onReady={onReady}
+                onSoundPose={sound.updateListener}
                 onFailure={onFailure}
               />
             </Suspense>
@@ -222,9 +223,14 @@ export default function App() {
           <div className="top-actions">
             {iconButton(
               sound.enabled ? 'sound' : 'muted',
-              sound.enabled ? 'Turn off nature sounds' : 'Turn on nature sounds',
+              sound.enabled ? 'Turn off museum audio' : 'Turn on museum audio',
               () => void sound.toggle(),
               sound.enabled,
+            )}
+            {(sound.loading || sound.error) && (
+              <span className="sound-status" role="status">
+                {sound.error || 'Loading museum audio…'}
+              </span>
             )}
             {document.fullscreenEnabled &&
               iconButton(
@@ -501,9 +507,24 @@ export default function App() {
                 </select>
               </div>
               <button className="sound-setting" onClick={() => void sound.toggle()}>
-                <Icon name={sound.enabled ? 'sound' : 'muted'} /> Nature sounds{' '}
-                <span>{sound.enabled ? 'On' : 'Off'}</span>
+                <Icon name={sound.enabled ? 'sound' : 'muted'} /> Museum audio{' '}
+                <span>{sound.loading ? 'Loading…' : sound.enabled ? 'On' : 'Off'}</span>
               </button>
+              <div className="setting sound-volume">
+                <label htmlFor="nature-volume">Sound volume</label>
+                <input
+                  id="nature-volume"
+                  type="range"
+                  min="0"
+                  max="100"
+                  step="1"
+                  value={Math.round(sound.volume * 100)}
+                  onChange={(event) => sound.setVolume(Number(event.target.value) / 100)}
+                  aria-valuetext={`${Math.round(sound.volume * 100)} percent`}
+                />
+                <output htmlFor="nature-volume">{Math.round(sound.volume * 100)}%</output>
+              </div>
+              <p className="sound-description">Soft piano, gentle water and occasional birdsong.</p>
             </>
           )}
           {panel === 'help' && (
