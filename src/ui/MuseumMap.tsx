@@ -1,6 +1,7 @@
 import { rooms } from '../world/layout';
 import type { RoomId } from '../content/museumContent';
 import { galleryPartitions, galleryPiers } from '../world/galleryLayout';
+import { decorFootprints } from '../world/wallDecorLayout';
 export function MuseumMap({
   current,
   position,
@@ -67,6 +68,18 @@ export function MuseumMap({
           ))}
         </g>
         <circle cx={position[0]} cy={position[1]} r=".8" className="map-visitor" />
+        <g fill="#ad9a78" opacity={0.65} pointerEvents="none" aria-hidden="true">
+          {decorFootprints.map((box, i) => (
+            <rect
+              key={i}
+              x={box.x - box.halfX}
+              y={box.z - box.halfZ}
+              width={box.halfX * 2}
+              height={box.halfZ * 2}
+              rx=".1"
+            />
+          ))}
+        </g>
       </svg>
       <div className="map-key">
         <span className="map-dot" /> You are here <span>All rooms are on one level</span>

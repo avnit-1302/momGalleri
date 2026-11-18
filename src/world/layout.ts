@@ -1,5 +1,6 @@
 import { museumContent, type RoomId, type Vec3 } from '../content/museumContent';
 import { MAIN_GALLERY, galleryPartitions, galleryPiers } from './galleryLayout';
+import { decorFootprints } from './wallDecorLayout';
 
 export interface Room {
   id: RoomId;
@@ -167,6 +168,7 @@ export const planters: Vec3[] = [
   [-7, 0, -45.5],
 ];
 export const colliders: Collider[] = [
+  ...decorFootprints,
   ...walls.map((w) => ({
     kind: 'box' as const,
     x: w.position[0],

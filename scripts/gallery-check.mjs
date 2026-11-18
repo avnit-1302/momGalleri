@@ -73,6 +73,12 @@ try {
     ['gallery-side', [9, 2.2, -32], [24, 3.2, -25]],
     ['indoor-plant', [24, 2, -42], [27, 1.8, -45.5]],
     ['visitor-detail', [-7, 1.6, -22], [-4, 1, -24]],
+    ['centred-snow-photo', [10, 3.1, -22.5], [10, 3.3, -12]],
+    ['family-door-decor', [25, 3, 0], [10, 3.1, 0]],
+    ['memory-door-decor', [-25, 3, 0], [-10, 3.1, 0]],
+    ['botanical-console', [16, 2.7, -7.5], [10.2, 2.8, -7.5]],
+    ['sunburst-decor', [-6.5, 2.8, -18.5], [-6.5, 2.8, -12.2]],
+    ['reed-decor', [26.5, 2.8, -18.5], [26.5, 2.8, -12.2]],
   ]) {
     const png = await page.evaluate(
       ({ position, target }) => {
@@ -112,6 +118,29 @@ try {
       () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))),
     );
   }
+  // Inspect the newly centred photograph using the real camera and pointer controls.
+  await page.getByRole('button', { name: /^Explore the museum/ }).click();
+  await page.getByRole('button', { name: 'Go to Forever Remembered', exact: true }).click();
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  for (let i = 0; i < 2; i++) {
+    await page.mouse.move(700, 480);
+    await page.mouse.down();
+    await page.mouse.move(700 + Math.PI / 0.0022 / 2, 480, { steps: 12 });
+    await page.mouse.up();
+  }
+  await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  const centred = await page.evaluate(() => {
+    let photo;
+    window.scene.traverse(object => { if (object.userData.photoId === 'nature-image00021') photo = object; });
+    const position = photo.getWorldPosition(window.camera.position.clone());
+    const centreX = position.x;
+    position.project(window.camera);
+    return { centreX, pixel: [(position.x + 1) * innerWidth / 2, (1 - position.y) * innerHeight / 2] };
+  });
+  assert.equal(centred.centreX, 10, 'Snow photograph is centred on the continuous x=3..17 wall');
+  await page.mouse.click(...centred.pixel);
+  await page.getByRole('dialog', { name: 'A Day in the Snow', exact: true }).waitFor();
+  await page.keyboard.press('Escape');
   assert.deepEqual(errors, []);
   console.log('Gallery checks passed:', JSON.stringify({ visitors: moved, errors }));
 } finally {

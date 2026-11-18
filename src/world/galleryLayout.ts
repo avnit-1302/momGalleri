@@ -42,7 +42,8 @@ export const natureSlots: { position: Vec3; rotation: number }[] = [
     rotation: -Math.PI / 2,
   })),
   { position: [20, 2.6, -23.57], rotation: 0 },
-  { position: [13.5, 3.3, -12.28], rotation: Math.PI },
+  // The two adjoining wall sections form one uninterrupted surface from x=3 to x=17.
+  { position: [10, 3.3, -12.28], rotation: Math.PI },
   { position: [0, 2.6, -23.57], rotation: 0 },
   ...[-30, -37, -44].map((z) => ({ position: [-9.72, 3.3, z] as Vec3, rotation: Math.PI / 2 })),
 ];

@@ -9,6 +9,7 @@
 - The sunflower floor inlay is original procedural geometry in `src/world/SunflowerFloor.tsx`: layered stone petals, brass edging and instanced spiral seeds. No downloaded artwork or external asset service is used. The vaulted gallery and oak-plank texture in `src/world/MainGallery.tsx` are also original project assets.
 - Family photographs and videos you add retain their own authorship and rights.
 - The broad-leaf ficus plants in `IndoorPlants.tsx`, their vein texture, and the architecture in `GalleryDetails.tsx` are original code-generated assets.
+- `WallDecor.tsx` contains six original decorative arrangements: a botanical relief and console, circular bronze sculpture and pedestal, asymmetric ceramic shelves, wave relief and bench, sunburst with display blocks, and reeds against oak fins. They are interior decorations and are not attributed to Puja Anand's photograph collection. All six share five static geometry batches and the museum's existing finishes; their individual footprints are defined in `wallDecorLayout.ts`.
 
 ## Rigged visitors and recorded ambience
 

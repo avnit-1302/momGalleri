@@ -19,6 +19,7 @@ import { museumContent, type Vec3 } from '../content/museumContent';
 import { benches, planters, rooms, walls } from './layout';
 import { contactTexture, oakTexture, stoneTexture, textTexture } from './materials';
 import { IndoorPlants } from './IndoorPlants';
+import { WallDecor } from './WallDecor';
 import { Seahorse } from './Seahorse';
 import { MAIN_GALLERY } from './galleryLayout';
 import { MainGallery } from './MainGallery';
@@ -755,6 +756,12 @@ export function Architecture({ low }: { low: boolean }) {
       ))}
       {/* An unframed Ik Onkar replaces the portrait within the existing tribute arch. */}
       <IndoorPlants />
+      <WallDecor
+        stone={finishes.stone}
+        wood={finishes.wood}
+        bronze={finishes.bronze}
+        dark={finishes.dark}
+      />
       <Arch
         x={-20}
         z={-29.62}
