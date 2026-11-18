@@ -30,7 +30,7 @@ export const rooms: Room[] = [
     name: 'The Seahorse Hall',
     subtitle: 'A quiet centrepiece',
     description:
-      'An original bronze seahorse, surrounded by water and light. Walk around the sculpture and look up towards the sky. A quiet moment to pause and reflect.',
+      'An original silver seahorse. Walk around the sculpture and look up towards the sky. A quiet moment to pause and reflect.',
     bounds: [-10, 10, -12, 12],
     spawn: [0, 1.7, 8.8],
     yaw: 0,
