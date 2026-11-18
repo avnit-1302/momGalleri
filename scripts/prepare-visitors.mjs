@@ -6,6 +6,7 @@ import { MeshoptSimplifier } from 'meshoptimizer';
 import sharp from 'sharp';
 import { mkdirSync, writeFileSync, statSync } from 'node:fs';
 import { relaxVisitorGait } from './relax-visitor-gait.mjs';
+import { dressMaya } from './dress-maya.mjs';
 const io = new NodeIO().registerExtensions(ALL_EXTENSIONS);
 await MeshoptSimplifier.ready;
 mkdirSync('public/models/visitors', { recursive: true });
@@ -28,14 +29,14 @@ for (const name of ['harper', 'jordan', 'maya']) {
     prune(),
     textureCompress({ encoder: sharp, targetFormat: 'webp', resize: [1024, 1024], quality: 85 }),
   );
-  document
-    .getRoot()
-    .setExtras({
-      source: 'Innerscene / MakeHuman',
-      license: 'CC0-1.0',
-      preparation: 'Mesh simplification, 1024px WebP textures, idle and relaxed walk retained',
-    });
+  document.getRoot().setExtras({
+    source: 'Innerscene / MakeHuman',
+    license: 'CC0-1.0',
+    preparation: 'Mesh simplification, 1024px WebP textures, idle and relaxed walk retained',
+  });
   const output = `public/models/visitors/${name}.glb`;
+  if (name === 'maya')
+    await dressMaya(document, await io.read('public/models/visitors/harper.glb'));
   await io.write(output, document);
   const triangles = document
     .getRoot()

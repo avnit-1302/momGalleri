@@ -19,8 +19,8 @@
   },
   {
     "name": "maya",
-    "bytes": 2652668,
-    "triangles": 30548,
+    "bytes": 2423864,
+    "triangles": 29222,
     "clips": [
       "Idle_Standing",
       "Walk_Relaxed"

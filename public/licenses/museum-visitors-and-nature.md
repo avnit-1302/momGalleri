@@ -17,6 +17,12 @@ Local files: models/visitors/harper.glb, jordan.glb, maya.glb.
 Modifications: simplified geometry; textures resized to at most 1024px and encoded
 as WebP; only Idle_Standing and Walk_Relaxed retained; carry props and unused data removed.
 These are authored skeletal animations, not motion capture.
+Maya's professional outfit reuses Harper's CC0 textured tailored suit, fitted
+offline to Maya's bind pose with joint weights remapped to her existing skeleton.
+Covered body triangles are removed to prevent skin clipping through the jacket.
+Her original face, ponytail, shoes and animation clips are retained. Clothing uses
+matte fabric materials and introduces no runtime fitting or cloth simulation.
+The repeatable fitting step is in `scripts/dress-maya.mjs`.
 The original relaxed walk was authored for 1.3 m/s. The museum version has been
 rebaked offline with shorter steps, narrower stance, lower foot clearance,
 reduced hip bounce and arm swing, and a two-bone leg solve. Its planted-foot
