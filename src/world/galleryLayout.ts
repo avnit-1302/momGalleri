@@ -6,7 +6,7 @@ export const MAIN_GALLERY = {
   wallHeight: 9.2,
   spawn: [10, 1.7, -18.5] as Vec3,
   sunflower: [10, -0.022, -30] as Vec3,
-  portrait: [10, 3.5, -47.63] as Vec3,
+  portrait: [10, 3.4, -47.63] as Vec3,
 };
 
 // Solid elements are shared with collision detection and artwork targeting.
