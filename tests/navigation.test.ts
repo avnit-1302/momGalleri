@@ -32,6 +32,16 @@ test('Every room has a safe spawn and is correctly identified', () => {
     assert.equal(roomAt(x, z), room.id);
   }
 });
+
+test('Visitor routes cross galleries through doorways with quiet viewing pauses', () => {
+  assert.equal(visitorRoutes.length, 3);
+  for (const route of visitorRoutes) {
+    const visited = new Set(route.map((point) => roomAt(point.x, point.z)));
+    assert.equal(visited.size, 5);
+    assert.ok(visited.has('celebration') && visited.has('atrium') && visited.has('sanctuary'));
+    assert.ok(route.every((point) => point.pause === 0 || (point.pause >= 5 && point.pause <= 15)));
+  }
+});
 test('All six rooms are physically reachable from the entrance', () => {
   const queue: [number, number][] = [[0, 24]],
     visited = new Set(['0,24']),

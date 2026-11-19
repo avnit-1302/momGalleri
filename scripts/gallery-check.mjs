@@ -71,6 +71,8 @@ try {
   for (const [name, position, target] of [
     ['gallery-overview', [10, 2.4, -17], [10, 4.5, -42]],
     ['gallery-side', [9, 2.2, -32], [24, 3.2, -25]],
+    ['gallery-portrait-bay', [10, 2.6, -39], [10, 3.7, -47.6]],
+    ['gallery-coffers', [10, 3.2, -34], [24, 7.1, -40]],
     ['indoor-plant', [24, 2, -42], [27, 1.8, -45.5]],
     ['visitor-detail', [-7, 1.6, -22], [-4, 1, -24]],
     ['centred-snow-photo', [10, 3.1, -22.5], [10, 3.3, -12]],

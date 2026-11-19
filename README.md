@@ -97,13 +97,17 @@ public/videos/                Optional videos of shared memories
 tests/                        Navigation and content checks
 ```
 
-Vegetation reuses geometry through instancing. Before entry, artwork is loaded with bounded concurrency, resized to at most 1024 pixels, and uploaded to the GPU; shaders and room views are also prepared. The photograph viewer loads the original file. Static shadows and environment lighting are cached, and four reusable picture lights keep the shader light count stable. The pool updates its reflection only when visible, nearby, and the viewpoint changes, at most 20 times per second. Artwork targeting tests photographs and walls instead of the forest. Automatic desktop resolution can adapt between 0.7 and 1.5 device pixels per CSS pixel; the touch-device default disables shadows and planar reflections.
+Vegetation uses lighter botanical geometry and instancing, with 160 trees (100 at low quality) and reduced distant undergrowth. Before entry, artwork is loaded with bounded concurrency, resized to at most 1024 pixels, and uploaded to the GPU; shaders and room views are also prepared. The photograph viewer loads the original file. Static shadows and environment lighting are cached, and four reusable picture lights keep the shader light count stable. The pool now uses the cached environment rather than a second live scene render. Artwork targeting tests photographs and walls instead of the forest. Automatic resolution adapts between 0.65 and 1.25 device pixels per CSS pixel (at most 1 on touch devices), responding to load after one-second samples and only recovering after six stable samples. Explicit high quality permits 1.5 DPR; the touch-device default disables shadows.
 
 See [asset credits](docs/ASSETS.md) for origins, font licences, and replacing the sculpture.
 
 The main gallery has two freestanding display walls, full-height piers, transverse beams, and recessed lighting details. Their solid footprints are shared by navigation and the map. `galleryLayout.ts` holds the placement of the architecture and nature artworks.
 
-Indoor ficus plants share leaf geometry, one 256-pixel texture, and four draw calls for the whole collection. Three visitors (two at low quality) follow validated routes, pause at artworks, and yield when the viewer is nearby. They use inexpensive contact shadows and do not update the static shadow map. Run `node scripts/gallery-check.mjs <preview-url>` to check their movement, inspect the relocated artworks, and save architectural screenshots.
+Indoor ficus plants share leaf geometry, one 256-pixel texture, and four draw calls for the whole collection. Three visitors (two at low quality) follow a one-way circuit through the nature gallery, sanctuary, memory gallery, atrium and family gallery, pause at artworks for 5–15 seconds, and yield when the viewer is nearby. The two extra visitors were removed after profiling to prioritise smooth interaction. Visitors use inexpensive contact shadows and do not update the static shadow map. Run `node scripts/gallery-check.mjs <preview-url>` to check their movement, inspect the artworks, and save architectural screenshots.
+
+Entry guidance explains walking, looking around and opening pictures, with touch-specific instructions. Visitors can dismiss it and reopen help from the menu. A prominent guided-tour button appears on both the welcome screen and the museum navigation bar.
+
+The nature gallery has layered ceiling coffers, flush limestone floor borders with bronze inlays, low wall panels, a fluted portrait surround and upholstered oak benches. The architectural trim still uses four merged static material batches and adds no real-time lights. The sunflower and memorial lettering remain unobstructed.
 
 Visitors now use locally bundled, textured CC0 human GLBs with skeletal walking
 and idle animations. The walking clip is rebaked offline with shorter steps,

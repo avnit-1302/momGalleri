@@ -33,6 +33,13 @@ try {
   );
   await page.screenshot({ path: 'artifacts/welcome-desktop.png' });
   await page.getByRole('button', { name: 'Enter the museum', exact: true }).click();
+  const tips = page.getByRole('complementary', { name: 'Getting started' });
+  await tips.waitFor();
+  assert.match(await tips.innerText(), /Use W A S D or the arrow keys/);
+  assert.match(await tips.innerText(), /Hold and drag the mouse/);
+  assert.match(await tips.innerText(), /Click a picture/);
+  await page.screenshot({ path: 'artifacts/entry-tips-desktop.png' });
+  await page.getByRole('button', { name: 'Start exploring', exact: true }).click();
   await page.getByRole('heading', { name: 'A Place to Remember', exact: true }).waitFor();
   await page.keyboard.down('KeyW');
   await page
@@ -81,8 +88,7 @@ try {
   await page.waitForFunction(() => Boolean(document.pointerLockElement));
   await page.keyboard.press('Escape');
   await page.waitForFunction(() => !document.pointerLockElement);
-  await page.getByRole('button', { name: 'Menu', exact: true }).click();
-  await page.getByRole('button', { name: 'Start a guided tour' }).click();
+  await page.getByRole('button', { name: 'Take a guided tour', exact: true }).click();
   for (let i = 0; i < 5; i++) await page.getByRole('button', { name: 'Next room' }).click();
   await page.getByRole('button', { name: 'Keep exploring', exact: true }).click();
   await page.getByRole('button', { name: 'Menu', exact: true }).click();
@@ -112,6 +118,9 @@ try {
     .waitFor({ timeout: 60000 });
   await phone.screenshot({ path: 'artifacts/welcome-mobile.png' });
   await phone.getByRole('button', { name: 'Enter the museum', exact: true }).tap();
+  await phone.getByRole('complementary', { name: 'Getting started' }).waitFor();
+  await phone.screenshot({ path: 'artifacts/entry-tips-mobile.png' });
+  await phone.getByRole('button', { name: 'Start exploring', exact: true }).tap();
   await phone.getByRole('group', { name: 'Movement joystick' }).waitFor();
   const joystick = phone.locator('.joystick');
   const box = await joystick.boundingBox();

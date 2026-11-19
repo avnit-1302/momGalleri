@@ -1,5 +1,4 @@
 import { useEffect, useLayoutEffect, useMemo, useRef } from 'react';
-import { PoolReflection } from './PoolReflection';
 import {
   BoxGeometry,
   ExtrudeGeometry,
@@ -54,7 +53,7 @@ export function Sign({
   );
 }
 
-type Finish = 'stone' | 'white' | 'wood' | 'bronze' | 'dark';
+type Finish = 'stone' | 'white' | 'wood' | 'bronze' | 'dark' | 'fabric';
 type Materials = Record<Finish, MeshStandardMaterial>;
 function Block({
   position,
@@ -352,14 +351,17 @@ function Pool({
         <ringGeometry args={[3.93, 4.1, 128]} />
         <meshStandardMaterial map={stone} color="#c2beb1" roughness={0.38} />
       </mesh>
-      {low ? (
-        <mesh position={[0, 0.222, 0]} rotation={[-Math.PI / 2, 0, 0]}>
-          <circleGeometry args={[3.94, 128]} />
-          <meshStandardMaterial color="#243b33" metalness={0.65} roughness={0.2} />
-        </mesh>
-      ) : (
-        <PoolReflection />
-      )}
+      {/* The cached environment gives water a soft sheen without rendering the
+          entire museum again whenever the visitor turns the camera. */}
+      <mesh position={[0, 0.222, 0]} rotation={[-Math.PI / 2, 0, 0]}>
+        <circleGeometry args={[3.94, 64]} />
+        <meshStandardMaterial
+          color="#344b43"
+          metalness={0.65}
+          roughness={0.23}
+          envMapIntensity={0.8}
+        />
+      </mesh>
       <mesh position={[0, 0.35, 0]} receiveShadow castShadow material={finishes.dark}>
         <cylinderGeometry args={[1.76, 1.76, 0.3, 96]} />
       </mesh>
@@ -541,6 +543,12 @@ export function Architecture({ low }: { low: boolean }) {
       }),
       bronze: new MeshStandardMaterial({ color: '#64543d', metalness: 0.72, roughness: 0.34 }),
       dark: new MeshStandardMaterial({ color: '#323d37', metalness: 0.18, roughness: 0.56 }),
+      fabric: new MeshStandardMaterial({
+        color: '#b4aa94',
+        roughness: 0.97,
+        bumpMap: stone,
+        bumpScale: 0.003,
+      }),
     }),
     [stone, wood],
   );
@@ -729,15 +737,35 @@ export function Architecture({ low }: { low: boolean }) {
             material={finishes.dark}
             rounded
           />
-          {Array.from({ length: 3 }, (_, j) => (
-            <Block
-              key={j}
-              position={[0, 0.025, -0.292 + j * 0.292]}
-              size={[3.55, 0.13, 0.282]}
-              material={finishes.wood}
-              rounded
-            />
-          ))}
+          {p[0] > -10 && p[2] < -12 ? (
+            <>
+              <Block
+                position={[0, -0.015, 0]}
+                size={[3.55, 0.13, 0.9]}
+                material={finishes.wood}
+                rounded
+              />
+              {[-0.88, 0.88].map((x) => (
+                <Block
+                  key={x}
+                  position={[x, 0.09, 0]}
+                  size={[1.71, 0.17, 0.83]}
+                  material={finishes.fabric}
+                  rounded
+                />
+              ))}
+            </>
+          ) : (
+            Array.from({ length: 3 }, (_, j) => (
+              <Block
+                key={j}
+                position={[0, 0.025, -0.292 + j * 0.292]}
+                size={[3.55, 0.13, 0.282]}
+                material={finishes.wood}
+                rounded
+              />
+            ))
+          )}
           {[-1.23, 1.23].map((x) => (
             <Block
               key={x}

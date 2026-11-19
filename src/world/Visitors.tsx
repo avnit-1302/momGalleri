@@ -112,7 +112,12 @@ function Visitor({
     );
     const blocked =
       playerDistance < 1.45 ||
-      neighbours.some((p, i) => i !== index && p.distanceToSquared(group.position) < 1.6);
+      neighbours.some(
+        (p, i) =>
+          i !== index &&
+          p.distanceToSquared(group.position) < 1.6 &&
+          (p.x - group.position.x) * dx + (p.z - group.position.z) * dz > 0,
+      );
     const travelling = state.pause <= 0 && distance > 0.025;
     const desired = travelling
       ? Math.atan2(dx, dz)
@@ -194,13 +199,14 @@ function Visitor({
 }
 
 export function Visitors({ low, active }: { low: boolean; active: boolean }) {
+  const count = low ? 2 : 3;
   const neighbours = useMemo(
-    () => visitorRoutes.map((route) => new Vector3(route[0].x, 0, route[0].z)),
-    [],
+    () => visitorRoutes.slice(0, count).map((route) => new Vector3(route[0].x, 0, route[0].z)),
+    [count],
   );
   return (
     <group>
-      {visitorRoutes.slice(0, low ? 2 : 3).map((route, index) => (
+      {visitorRoutes.slice(0, count).map((route, index) => (
         <Visitor key={index} index={index} route={route} active={active} neighbours={neighbours} />
       ))}
     </group>

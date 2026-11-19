@@ -22,26 +22,43 @@ type Props = VisitorProps & {
   onSoundPose: SoundPose;
 };
 // Respond to sustained load after preparation; increase resolution more cautiously.
-function AdaptiveResolution({ enabled }: { enabled: boolean }) {
+function AdaptiveResolution({ enabled, maxDpr }: { enabled: boolean; maxDpr: number }) {
   const setDpr = useThree((state) => state.setDpr);
-  const sample = useRef({ elapsed: 0, frames: 0, age: 0, dpr: Math.min(devicePixelRatio, 1.5) });
+  const sample = useRef({
+    elapsed: 0,
+    frames: 0,
+    age: 0,
+    recovery: 0,
+    dpr: Math.min(devicePixelRatio, maxDpr),
+  });
+  useEffect(() => {
+    sample.current = {
+      elapsed: 0,
+      frames: 0,
+      age: 0,
+      recovery: 0,
+      dpr: Math.min(devicePixelRatio, maxDpr),
+    };
+  }, [maxDpr]);
   useFrame((_, dt) => {
     if (!enabled || document.hidden) return;
     const s = sample.current;
     s.age += dt;
-    if (s.age < 2) return;
+    if (s.age < 0.5) return;
     s.elapsed += dt;
     s.frames++;
-    if (s.elapsed < 2) return;
+    if (s.elapsed < 1) return;
     const fps = s.frames / s.elapsed;
+    s.recovery = fps > 58 ? s.recovery + 1 : 0;
     const next = Math.min(
       devicePixelRatio,
-      1.5,
-      Math.max(0.7, s.dpr + (fps < 28 ? -0.25 : fps > 55 ? 0.05 : 0)),
+      maxDpr,
+      Math.max(0.65, s.dpr + (fps < 45 ? -0.2 : s.recovery >= 6 ? 0.1 : 0)),
     );
     if (next !== s.dpr) {
       s.dpr = next;
       setDpr(next);
+      s.recovery = 0;
     }
     s.elapsed = 0;
     s.frames = 0;
@@ -147,7 +164,7 @@ export default function Museum({ quality, onReady, onFailure, onSoundPose, ...vi
   return (
     <Canvas
       shadows={low ? false : { type: PCFSoftShadowMap }}
-      dpr={low ? 1 : [1, 1.5]}
+      dpr={low ? 1 : quality === 'high' ? [1, 1.5] : [1, 1.25]}
       frameloop={visible ? 'always' : 'never'}
       camera={{ position: [8.5, 4.1, 18], fov: 65, near: 0.1, far: 190 }}
       gl={{
@@ -182,7 +199,7 @@ export default function Museum({ quality, onReady, onFailure, onSoundPose, ...vi
       <VisitorControls {...visitor} />
       <Visitors low={low} active={visitor.entered && visitor.active} />
       <SoundListener onPose={onSoundPose} />
-      <AdaptiveResolution enabled={quality === 'auto' && !low && visitor.entered} />
+      <AdaptiveResolution enabled={quality === 'auto' && visitor.entered} maxDpr={low ? 1 : 1.25} />
       {textures && <PrepareScene low={low} onReady={onReady} onFailure={onFailure} />}
     </Canvas>
   );

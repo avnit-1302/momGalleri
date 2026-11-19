@@ -95,6 +95,7 @@ export default function App() {
     [locked, setLocked] = useState(false),
     [quality, setQuality] = useState<Quality>('auto');
   const [tour, setTour] = useState<number | null>(null),
+    [showEntryGuide, setShowEntryGuide] = useState(false),
     [notice, setNotice] = useState(''),
     [full, setFull] = useState(false);
   const input = useRef<VisitorInput>({ x: 0, y: 0, dragged: false }),
@@ -112,6 +113,8 @@ export default function App() {
     setPanel(null);
   }, []);
   const startTour = () => {
+    if (document.pointerLockElement) document.exitPointerLock();
+    setShowEntryGuide(false);
     setEntered(true);
     setTour(0);
     navigate('entrance');
@@ -267,7 +270,11 @@ export default function App() {
               <button
                 className="primary-button"
                 disabled={supported && !ready}
-                onClick={() => (supported ? setEntered(true) : open('collection'))}
+                onClick={() => {
+                  if (!supported) return open('collection');
+                  setEntered(true);
+                  setShowEntryGuide(true);
+                }}
               >
                 {!supported
                   ? 'View photographs'
@@ -277,15 +284,26 @@ export default function App() {
                 {ready || !supported ? <Icon name="arrow" /> : <span className="spinner" />}
               </button>
               {supported && (
-                <button className="text-button" disabled={!ready} onClick={startTour}>
-                  Take a guided tour <span>↗</span>
+                <button
+                  className="guided-tour-cta"
+                  disabled={!ready}
+                  onClick={startTour}
+                  aria-label="Take a guided tour"
+                >
+                  <Icon name="play" />
+                  <span>
+                    Take a guided tour<small>Discover all six rooms</small>
+                  </span>
+                  <Icon name="arrow" size={18} />
                 </button>
               )}
             </div>
             <div className="welcome-instructions">
               <Icon name="mouse" size={16} />
-              <span className="desktop-copy">WASD to walk · Drag the mouse to look around</span>
-              <span className="mobile-copy">Use the joystick · Drag to look around</span>
+              <span className="desktop-copy">WASD to walk · Drag to look · Click photographs</span>
+              <span className="mobile-copy">
+                Joystick to walk · Swipe to look · Tap photographs
+              </span>
             </div>
           </div>
           <div className="anniversary">
@@ -347,6 +365,14 @@ export default function App() {
               <span>Explore the museum</span>
               <span className="keycap">M</span>
             </button>
+            <button
+              className="tour-launch-button"
+              onClick={startTour}
+              aria-label="Take a guided tour"
+            >
+              <Icon name="play" size={17} />
+              <span>Guided tour</span>
+            </button>
             <div className="walking-hint">
               {locked ? (
                 <>
@@ -368,6 +394,56 @@ export default function App() {
               <span>How to explore</span>
             </button>
           </nav>
+          {showEntryGuide && !panel && tour === null && (
+            <aside className="entry-guide" aria-label="Getting started">
+              <button
+                className="icon-button entry-guide-close"
+                aria-label="Dismiss exploration tips"
+                onClick={() => setShowEntryGuide(false)}
+              >
+                <Icon name="close" size={18} />
+              </button>
+              <span className="eyebrow">WELCOME TO THE MUSEUM</span>
+              <h2>Explore at your own pace</h2>
+              <ul>
+                <li>
+                  <Icon name="arrow" />
+                  <div>
+                    <strong>Walk through the rooms</strong>
+                    <span className="desktop-copy">Use W A S D or the arrow keys.</span>
+                    <span className="mobile-copy">Move with the on-screen joystick.</span>
+                  </div>
+                </li>
+                <li>
+                  <Icon name="mouse" />
+                  <div>
+                    <strong>Look around</strong>
+                    <span className="desktop-copy">Hold and drag the mouse to turn your view.</span>
+                    <span className="mobile-copy">Swipe across the room to turn your view.</span>
+                  </div>
+                </li>
+                <li>
+                  <Icon name="image" />
+                  <div>
+                    <strong>Discover the photographs</strong>
+                    <span className="desktop-copy">
+                      Click a picture to enlarge it and read its story.
+                    </span>
+                    <span className="mobile-copy">
+                      Tap a picture to enlarge it and read its story.
+                    </span>
+                  </div>
+                </li>
+              </ul>
+              <p>
+                Prefer a little guidance? The <strong>Guided tour</strong> below takes you through
+                all six rooms.
+              </p>
+              <button className="primary-button" onClick={() => setShowEntryGuide(false)}>
+                Start exploring <Icon name="arrow" size={17} />
+              </button>
+            </aside>
+          )}
           {tour !== null && !panel && (
             <section className="tour-card" aria-label="Guided tour">
               <div className="tour-heading">

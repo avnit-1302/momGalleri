@@ -61,7 +61,9 @@ function TreeStand({
 }) {
   const assets = useMemo(
     () => ({
-      ...treeGeometry(species, low),
+      // Fine twig geometry is invisible from inside the museum. Use the lighter
+      // botanical mesh for every tree while retaining textured leaf clusters.
+      ...treeGeometry(species, true),
       bark: barkTexture(species),
       leaves: leafTexture(species),
     }),
@@ -103,7 +105,7 @@ export function Forest({ low }: { low: boolean }) {
     const outside = (x: number, z: number) =>
       !(x > -34 && x < 34 && z > -35 && z < 33) &&
       !(x > gx1 - 8 && x < gx2 + 8 && z > gz1 - 8 && z < gz2 + 8);
-    for (let i = 0; i < (low ? 138 : 258); i++) {
+    for (let i = 0; i < (low ? 100 : 160); i++) {
       let x: number, z: number;
       // Dense, varied woodland edge; taller trees create depth behind it.
       if (i < 76) {
@@ -133,7 +135,7 @@ export function Forest({ low }: { low: boolean }) {
         ),
         color: tint,
       });
-      if (i < 120) {
+      if (i < (low ? 30 : 60)) {
         rocks.push({
           matrix: transformAt(
             x + 1.8,
@@ -158,7 +160,7 @@ export function Forest({ low }: { low: boolean }) {
         });
       }
     }
-    for (let i = 0; i < (low ? 850 : 2100); i++) {
+    for (let i = 0; i < (low ? 320 : 800); i++) {
       let x: number, z: number;
       do {
         x = (random() - 0.5) * 142;
@@ -168,7 +170,7 @@ export function Forest({ low }: { low: boolean }) {
       grass.push({
         matrix: transformAt(x, terrainHeight(x, z), z, 0.7 + random() * 1.8, random() * 6),
       });
-      if (i % (low ? 9 : 7) === 0 && nearEdge)
+      if (i % (low ? 18 : 14) === 0 && nearEdge)
         ferns.push({
           matrix: transformAt(
             x + 0.4,
@@ -217,7 +219,7 @@ export function Forest({ low }: { low: boolean }) {
     [assets],
   );
   return (
-    <group>
+    <group name="Museum forest">
       <mesh geometry={assets.terrain} receiveShadow>
         <meshStandardMaterial
           map={assets.ground}
