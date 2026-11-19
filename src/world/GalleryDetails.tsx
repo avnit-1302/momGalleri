@@ -62,17 +62,18 @@ export function GalleryDetails() {
     }
     boxes.push({ position: [10, 0.8, -47.64], size: [6.25, 0.12, 0.3], finish: 1 });
     boxes.push({ position: [10, 5.42, -47.64], size: [6.25, 0.1, 0.3], finish: 0 });
-    // Low wall panelling adds depth beneath the art without competing with it.
+    // Tall-photo plaques start at y=0.96. Keep the trim below y=0.82 so
+    // its projecting edge cannot obscure their lower half at eye level.
     for (const x of [-4, 3, 17, 24]) {
-      boxes.push({ position: [x, 0.6, -47.77], size: [5.8, 0.95, 0.08], finish: 1 });
-      boxes.push({ position: [x, 1.1, -47.7], size: [5.8, 0.035, 0.025], finish: 2 });
+      boxes.push({ position: [x, 0.45, -47.77], size: [5.8, 0.65, 0.08], finish: 1 });
+      boxes.push({ position: [x, 0.8, -47.7], size: [5.8, 0.035, 0.025], finish: 2 });
     }
     for (const x of [-9.76, 29.76]) {
-      const zs = x < 0 ? [-33.5, -40.5, -45.7] : [-22, -30, -37, -44];
+      const zs = x < 0 ? [-30, -37, -44] : [-22, -30, -37, -44];
       for (const z of zs) {
-        boxes.push({ position: [x, 0.6, z], size: [0.08, 0.95, 3.5], finish: 1 });
+        boxes.push({ position: [x, 0.45, z], size: [0.08, 0.65, 3.5], finish: 1 });
         boxes.push({
-          position: [x + (x < 0 ? 0.05 : -0.05), 1.1, z],
+          position: [x + (x < 0 ? 0.05 : -0.05), 0.8, z],
           size: [0.025, 0.035, 3.5],
           finish: 2,
         });

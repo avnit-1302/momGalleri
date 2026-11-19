@@ -164,8 +164,8 @@ export const planters: Vec3[] = [
   [27, 0, 9],
   [-27.5, 0, -27.5],
   [-12.5, 0, -27.5],
-  [27, 0, -45.5],
-  [-7, 0, -45.5],
+  [28.4, 0, -46.5],
+  [-8.4, 0, -46.5],
 ];
 export const colliders: Collider[] = [
   ...decorFootprints,

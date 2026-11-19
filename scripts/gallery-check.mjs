@@ -33,6 +33,8 @@ try {
   await page
     .getByRole('button', { name: 'Enter the museum', exact: true })
     .click({ timeout: 90000 });
+  const entryTips = page.getByRole('button', { name: 'Start exploring', exact: true });
+  if (await entryTips.isVisible()) await entryTips.click();
   await page.getByRole('button', { name: /^Explore the museum/ }).click();
   await page.getByRole('button', { name: 'Go to Forever Remembered', exact: true }).click();
   await page.screenshot({ path: 'artifacts/gallery-arrival.png' });
@@ -73,6 +75,8 @@ try {
     ['gallery-side', [9, 2.2, -32], [24, 3.2, -25]],
     ['gallery-portrait-bay', [10, 2.6, -39], [10, 3.7, -47.6]],
     ['gallery-coffers', [10, 3.2, -34], [24, 7.1, -40]],
+    ['flower-caption-clearance', [-4, 2, -43], [-4, 2.8, -47.72]],
+    ['droplet-caption-clearance', [-5, 2, -44], [-9.72, 2.8, -44]],
     ['indoor-plant', [24, 2, -42], [27, 1.8, -45.5]],
     ['visitor-detail', [-7, 1.6, -22], [-4, 1, -24]],
     ['centred-snow-photo', [10, 3.1, -22.5], [10, 3.3, -12]],
