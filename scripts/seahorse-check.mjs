@@ -68,6 +68,7 @@ try {
       await page.unroute('**/models/seahorse.glb');
       await page.reload();
     }
+    await page.getByRole('button', { name: 'Continue to the museum' }).click();
     await page
       .getByRole('button', { name: 'Enter the museum', exact: true })
       .waitFor({ timeout: 90000 });

@@ -23,6 +23,7 @@ await page.addInitScript(() => {
 });
 try {
   await page.goto(process.argv[2] || 'http://127.0.0.1:4175');
+  await page.getByRole('button', { name: 'Continue to the museum' }).click();
   await page
     .getByRole('button', { name: 'Enter the museum', exact: true })
     .click({ timeout: 120000 });

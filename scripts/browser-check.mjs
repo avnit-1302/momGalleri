@@ -22,6 +22,12 @@ page.on('response', (response) => {
 const base = process.argv[2] || process.env.MUSEUM_URL || 'http://127.0.0.1:5173';
 try {
   await page.goto(base, { waitUntil: 'networkidle' });
+  const deviceNotice = page.getByRole('dialog', { name: 'Best experienced on a computer' });
+  await deviceNotice.waitFor();
+  assert.match(await deviceNotice.innerText(), /desktop or laptop/);
+  await page.screenshot({ path: 'artifacts/device-notice-desktop.png' });
+  await deviceNotice.getByRole('button', { name: 'Continue to the museum' }).click();
+  await deviceNotice.waitFor({ state: 'hidden' });
   await page
     .getByRole('button', { name: 'Enter the museum', exact: true })
     .waitFor({ state: 'visible', timeout: 60000 });
@@ -113,6 +119,10 @@ try {
   const phone = await mobile.newPage();
   phone.on('pageerror', (error) => errors.push(error.message));
   await phone.goto(base, { waitUntil: 'networkidle' });
+  await phone.getByRole('dialog', { name: 'Best experienced on a computer' }).waitFor();
+  assert.equal(await phone.evaluate(() => document.documentElement.scrollWidth > innerWidth), false);
+  await phone.screenshot({ path: 'artifacts/device-notice-mobile.png' });
+  await phone.getByRole('button', { name: 'Continue to the museum' }).tap();
   await phone
     .getByRole('button', { name: 'Enter the museum', exact: true })
     .waitFor({ timeout: 60000 });
@@ -174,6 +184,8 @@ try {
     };
   });
   await fallbackPage.goto(base);
+  await fallbackPage.getByRole('dialog', { name: 'Best experienced on a computer' }).waitFor();
+  await fallbackPage.keyboard.press('Escape');
   await fallbackPage.getByRole('button', { name: 'View photographs', exact: true }).click();
   await fallbackPage.getByRole('dialog', { name: 'All photographs' }).waitFor();
   await fallback.close();
@@ -189,6 +201,7 @@ try {
         errors,
         expectedMissingImageRequests: requests,
         checks: [
+          'startup computer recommendation: desktop, mobile, and Escape dismissal',
           'desktop welcome',
           'WASD entrance to atrium',
           'all map destinations',

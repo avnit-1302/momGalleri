@@ -140,6 +140,7 @@ async function portraits(label, side = false) {
 }
 try {
   await page.goto(process.argv[2] || 'http://127.0.0.1:5175');
+  await page.getByRole('button', { name: 'Continue to the museum' }).click();
   console.log('Page loaded; waiting for museum preparation');
   await page
     .getByRole('button', { name: 'Enter the museum', exact: true })

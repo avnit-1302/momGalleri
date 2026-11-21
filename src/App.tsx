@@ -102,6 +102,8 @@ export default function App() {
     sound = useAmbience();
   const currentRoom = rooms.find((r) => r.id === room)!;
   const close = useCallback(() => setPanel(null), []);
+  const [showDeviceNotice, setShowDeviceNotice] = useState(true);
+  const dismissDeviceNotice = useCallback(() => setShowDeviceNotice(false), []);
   const onReady = useCallback(() => setReady(true), []),
     onFailure = useCallback(() => setSupported(false), []);
   const select = useCallback((photo: Photograph) => {
@@ -714,6 +716,23 @@ export default function App() {
               <p>{museumContent.mother.ending}</p>
             </>
           )}
+        </Dialog>
+      )}
+      {showDeviceNotice && (
+        <Dialog
+          title="Best experienced on a computer"
+          onClose={dismissDeviceNotice}
+          className="device-notice"
+        >
+          <span className="eyebrow">BEFORE YOU EXPLORE</span>
+          <h2>Best experienced on a computer</h2>
+          <p>
+            For the best visual quality and smoother navigation, we recommend visiting this museum
+            on a desktop or laptop. You can still explore on a phone or tablet.
+          </p>
+          <button className="primary-button" onClick={dismissDeviceNotice}>
+            Continue to the museum <Icon name="arrow" />
+          </button>
         </Dialog>
       )}
     </main>

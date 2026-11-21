@@ -646,6 +646,17 @@ button:disabled {
 .dialog .primary-button {
   margin-top: 25px;
 }
+.device-notice {
+  width: min(520px, 100%);
+}
+.device-notice h2 {
+  font-size: 38px;
+  line-height: 1.1;
+}
+.dialog.device-notice > p {
+  font-size: 14px;
+  line-height: 1.8;
+}
 .menu-links {
   margin: 24px 0;
 }
